@@ -1,1205 +1,555 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frederick Douglass "Fourth of July" Speech (1852) - Dashboard</title>
+    <title>フレデリック・ダグラス演説ダッシュボード</title>
     <style>
-        :root {
-            --color-bg-primary: #1a1a1a;
-            --color-bg-secondary: #2d2d2d;
-            --color-text-primary: #f5f5f5;
-            --color-text-secondary: #d0d0d0;
-            --color-accent-primary: #8b4513;
-            --color-accent-secondary: #cd5c5c;
-            --color-accent-tertiary: #daa520;
-            --color-border: #444;
-            --space-unit: 16px;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            font-size: 16px;
-            font-family: 'Georgia', 'Garamond', serif;
-            line-height: 1.6;
-            color: var(--color-text-primary);
-            background-color: var(--color-bg-primary);
-        }
-
         body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            min-height: 100vh;
-            padding: var(--space-unit) 0;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
+            color: #e8e4dc;
+            line-height: 1.6;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 var(--space-unit);
         }
 
-        /* Header Section */
         header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #3d3d3d 100%);
-            border-bottom: 3px solid var(--color-accent-primary);
-            padding: calc(var(--space-unit) * 2) var(--space-unit);
-            margin-bottom: calc(var(--space-unit) * 2);
             text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #8b4513;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            /* ヘッダー内の要素をフレックスボックスで整列 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            color: var(--color-accent-tertiary);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 0.5rem;
+        /* --- 画像用の追加スタイル --- */
+        .profile-container {
+            width: 180px;     /* 画像のサイズ */
+            height: 180px;
+            margin-bottom: 20px;
+            border-radius: 50%; /* 円形にする */
+            padding: 5px;       /* 枠線の太さ */
+            /* 金と銅のグラデーション枠線 */
+            background: linear-gradient(135deg, #d4af37, #8b4513);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* 深い影 */
+            transition: transform 0.3s ease;
         }
 
-        header .subtitle {
-            font-size: 1.1rem;
-            color: var(--color-accent-secondary);
-            margin-bottom: 0.5rem;
+        .profile-container:hover {
+            transform: scale(1.05); /* ホバー時に少し拡大 */
         }
 
-        header .date {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover; /* 縦横比を維持してトリミング */
+            border: 4px solid #1a1a1a; /* 内側の暗い境界線 */
+            display: block;
+        }
+        /* ------------------------- */
+
+        h1 {
+            font-size: 2.5em;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 1.2em;
+            color: #c9a961;
             font-style: italic;
         }
 
-        /* Navigation Buttons */
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: calc(var(--space-unit) * 0.5);
-            margin: calc(var(--space-unit) * 2) 0;
-            flex-wrap: wrap;
+        .main-quote {
+            background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 6px solid #d4af37;
+            border-radius: 8px;
+            font-size: 1.5em;
+            font-style: italic;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .nav-btn {
-            padding: 0.75rem 1.5rem;
-            background-color: var(--color-bg-secondary);
-            color: var(--color-text-primary);
-            border: 2px solid var(--color-accent-primary);
-            cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            border-radius: 4px;
+        .section {
+            margin-bottom: 40px;
         }
 
-        .nav-btn:hover {
-            background-color: var(--color-accent-primary);
-            color: #fff;
-            transform: translateY(-2px);
+        .section-title {
+            font-size: 2em;
+            color: #d4af37;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #8b4513;
         }
 
-        .nav-btn.active {
-            background-color: var(--color-accent-primary);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(139, 69, 19, 0.6);
-        }
-
-        /* Main Grid Layout */
-        .dashboard-grid {
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: calc(var(--space-unit) * 1.5);
-            margin-bottom: calc(var(--space-unit) * 2);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        /* Card Styles */
         .card {
-            background-color: var(--color-bg-secondary);
-            border: 2px solid var(--color-border);
-            border-left: 4px solid var(--color-accent-primary);
-            padding: calc(var(--space-unit) * 1.5);
-            border-radius: 4px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid #8b4513;
+            border-radius: 10px;
+            padding: 25px;
             transition: all 0.3s ease;
-            display: none;
-        }
-
-        .card.active {
-            display: block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         .card:hover {
-            border-color: var(--color-accent-secondary);
-            box-shadow: 0 8px 20px rgba(205, 92, 92, 0.2);
-            transform: translateY(-4px);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
         }
 
-        .card h2 {
-            color: var(--color-accent-tertiary);
-            font-size: 1.5rem;
-            margin-bottom: var(--space-unit);
-            border-bottom: 2px solid var(--color-accent-primary);
-            padding-bottom: 0.75rem;
+        .card-title {
+            font-size: 1.3em;
+            color: #d4af37;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .card h3 {
-            color: var(--color-accent-secondary);
-            font-size: 1.1rem;
-            margin-top: calc(var(--space-unit) * 1.5);
-            margin-bottom: 0.75rem;
+        .icon {
+            font-size: 1.5em;
         }
 
-        .card p, .card li {
-            color: var(--color-text-secondary);
-            margin-bottom: 0.75rem;
-            line-height: 1.8;
+        .card-content {
+            color: #e8e4dc;
+            font-size: 1em;
         }
 
-        .card ul {
-            list-style-position: inside;
-            margin: 1rem 0;
-        }
-
-        .card li {
-            margin-bottom: 0.5rem;
-        }
-
-        .quote {
-            background-color: rgba(139, 69, 19, 0.1);
-            border-left: 4px solid var(--color-accent-tertiary);
-            padding: var(--space-unit);
-            margin: var(--space-unit) 0;
+        .highlight-quote {
+            background: rgba(139, 0, 0, 0.3);
+            border-left: 4px solid #8b0000;
+            padding: 20px;
+            margin: 15px 0;
             font-style: italic;
-            color: var(--color-accent-tertiary);
-            border-radius: 2px;
+            border-radius: 5px;
         }
 
-        .stat-box {
-            background-color: rgba(205, 92, 92, 0.1);
-            border-left: 4px solid var(--color-accent-secondary);
-            padding: var(--space-unit);
-            margin: var(--space-unit) 0;
-            border-radius: 2px;
-        }
-
-        .stat-box .stat-number {
-            font-size: 1.8rem;
-            color: var(--color-accent-secondary);
+        .kpi-value {
+            font-size: 2.5em;
+            color: #d4af37;
             font-weight: bold;
+            margin: 15px 0;
         }
 
-        .stat-box .stat-label {
-            color: var(--color-text-secondary);
-            font-size: 0.9rem;
+        .comparison-list {
+            list-style: none;
+            margin-top: 15px;
         }
 
-        /* Comparison Container */
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-unit);
-            margin: var(--space-unit) 0;
+        .comparison-list li {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
         }
 
-        .comparison-item {
-            background-color: rgba(0,0,0,0.3);
-            padding: var(--space-unit);
-            border-radius: 4px;
-            border-left: 4px solid var(--color-accent-secondary);
+        .comparison-list li:nth-child(odd) {
+            background: rgba(139, 69, 19, 0.3);
         }
 
-        .comparison-item.positive {
-            border-left-color: var(--color-accent-tertiary);
+        .chart-container {
+            margin: 20px 0;
         }
 
-        .comparison-item h4 {
-            color: var(--color-accent-tertiary);
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+        .bar-chart {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            height: 150px;
+            margin: 20px 0;
         }
 
-        .comparison-item.against h4 {
-            color: var(--color-accent-secondary);
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #8b0000, #d4af37);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        .comparison-item p {
-            color: var(--color-text-secondary);
-            font-size: 0.9rem;
+        .bar:hover {
+            opacity: 0.8;
         }
 
-        /* Tone Display */
-        .tone-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-unit);
-            margin: var(--space-unit) 0;
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .tone-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
         }
 
         .tone-btn {
-            padding: 1rem;
-            background-color: rgba(139, 69, 19, 0.2);
-            border: 2px solid var(--color-accent-primary);
-            color: var(--color-text-primary);
+            padding: 12px 24px;
+            background: rgba(139, 69, 19, 0.6);
+            border: 2px solid #8b4513;
+            color: #e8e4dc;
             cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .tone-btn:hover, .tone-btn.selected {
-            background-color: var(--color-accent-primary);
-            box-shadow: 0 0 15px rgba(139, 69, 19, 0.6);
-        }
-
-        .tone-display {
-            background-color: rgba(139, 69, 19, 0.15);
-            border: 2px solid var(--color-accent-primary);
-            padding: var(--space-unit);
-            border-radius: 4px;
-            margin-top: var(--space-unit);
-            min-height: 100px;
-        }
-
-        .tone-display p {
-            color: var(--color-accent-tertiary);
-            font-style: italic;
-        }
-
-        /* Section Navigation */
-        .section-nav {
-            background-color: var(--color-bg-secondary);
-            padding: calc(var(--space-unit) * 1.5);
-            border: 2px solid var(--color-border);
-            border-radius: 4px;
-            margin-bottom: calc(var(--space-unit) * 2);
-        }
-
-        .section-nav h3 {
-            color: var(--color-accent-tertiary);
-            margin-bottom: var(--space-unit);
-        }
-
-        .section-buttons {
-            display: flex;
-            gap: var(--space-unit);
-            flex-wrap: wrap;
-        }
-
-        .section-btn {
-            padding: 0.75rem 1.25rem;
-            background-color: rgba(139, 69, 19, 0.2);
-            border: 2px solid var(--color-accent-primary);
-            color: var(--color-text-primary);
-            cursor: pointer;
-            border-radius: 4px;
+            border-radius: 5px;
             transition: all 0.3s ease;
             font-family: 'Georgia', serif;
+            font-size: 1em;
         }
 
-        .section-btn:hover, .section-btn.active {
-            background-color: var(--color-accent-primary);
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
+        .tone-btn:hover, .tone-btn.active {
+            background: #8b0000;
+            border-color: #d4af37;
+            transform: scale(1.05);
         }
 
-        /* Responsive */
+        .quote-display {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #8b4513;
+            min-height: 100px;
+            display: none;
+        }
+
+        .quote-display.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hope-list {
+            list-style: none;
+            counter-reset: hope-counter;
+        }
+
+        .hope-list li {
+            counter-increment: hope-counter;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(139, 69, 19, 0.3);
+            border-left: 4px solid #d4af37;
+            border-radius: 5px;
+        }
+
+        .hope-list li::before {
+            content: counter(hope-counter) ". ";
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .emphasis {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
+            h1 {
+                font-size: 1.8em;
             }
 
-            .comparison-grid {
+            .main-quote {
+                font-size: 1.2em;
+                padding: 20px;
+            }
+
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
 
-            nav {
+            .tone-buttons {
                 flex-direction: column;
             }
-
-            .nav-btn {
-                width: 100%;
+            
+            /* スマホ表示での画像調整 */
+            .profile-container {
+                width: 140px;
+                height: 140px;
             }
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: calc(var(--space-unit) * 2);
-            color: var(--color-text-secondary);
-            border-top: 2px solid var(--color-accent-primary);
-            margin-top: calc(var(--space-unit) * 3);
-        }
-
-        footer p {
-            margin: 0.5rem 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Frederick Douglass</h1>
-        <p class="subtitle">"Fourth of July" Speech (1852)</p>
-        <p class="date">July 5, 1852 — Rochester, New York</p>
-    </header>
-
     <div class="container">
-        <div class="section-nav">
-            <h3>Speech Sections:</h3>
-            <div class="section-buttons">
-                <button class="section-btn" data-section="0">📋 Speech Analysis</button>
-                <button class="section-btn active" data-section="1">① Core Contradiction</button>
-                <button class="section-btn" data-section="2">② Slavery's Reality</button>
-                <button class="section-btn" data-section="3">③ Hypocrisy & Church</button>
-                <button class="section-btn" data-section="4">④ Conclusion & Hope</button>
-                <button class="section-btn" data-section="5">🎯 Modern Translation</button>
+        <header>
+            <!-- ここに画像を配置 -->
+            <div class="profile-container">
+                <img src="image.jpg" alt="Frederick Douglass" class="profile-image">
             </div>
+            
+            <h1>フレデリック・ダグラス「独立記念日」演説</h1>
+            <p class="date">1852年7月5日</p>
+        </header>
+
+        <div class="main-quote">
+            「この7月4日は、あなた方のものであり、私のものではありません」
         </div>
 
-        <!-- INTERACTIVE FEATURES SECTION -->
-        <div class="section-nav">
-            <h3>🎮 Interactive Features:</h3>
-            <div class="section-buttons">
-                <button class="section-btn" data-section="timeline">📅 Timeline Journey</button>
-                <button class="section-btn" data-section="comparison">⚖️ 1852 vs 2025</button>
-                <button class="section-btn" data-section="quiz">❓ Response Quiz</button>
-                <button class="section-btn" data-section="emotion">📊 Emotion Meter</button>
-                <button class="section-btn" data-section="social">📱 Social Media View</button>
-            </div>
-        </div>
+        <!-- Section 1: The Core Contradiction -->
+        <section class="section" id="section-1">
+            <h2 class="section-title">演説の核心となる矛盾</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">⛓️ ⭐</span>
+                        あなた方と私たちの距離
+                    </div>
+                    <div class="card-content">
+                        <p>あなた方の独立は、私たちとの計り知れない距離を明らかにする</p>
+                        <div class="kpi-value">自由 vs 奴隷</div>
+                        <p>アメリカの独立記念日は、奴隷にされた人々にとって偽善の象徴であり、自由を祝う人々と鎖につながれた人々との間の深い溝を露呈させる。</p>
+                    </div>
+                </div>
 
-        <!-- INTERACTIVE: TIMELINE -->
-        <div class="dashboard-grid" id="section-timeline" style="display: none;">
-            <div class="card" style="grid-column: 1 / -1;">
-                <h2>📅 Journey Through the Speech</h2>
-                <div style="position: relative; height: 400px; background: linear-gradient(to right, #8b4513 0%, #cd5c5c 50%, #daa520 100%); border-radius: 8px; padding: 20px; overflow-x: auto;">
-                    <div id="timeline-container" style="position: relative; height: 100%; display: flex; align-items: center; justify-content: space-between;">
-                        <div class="timeline-point" data-step="1" style="cursor: pointer; text-align: center; flex: 1;">
-                            <div style="width: 60px; height: 60px; background: #1a1a1a; border: 4px solid #daa520; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">1</div>
-                            <p style="color: #fff; font-weight: bold;">Opening</p>
-                            <p style="color: #d0d0d0; font-size: 0.8rem;">The Question</p>
-                        </div>
-                        <div class="timeline-point" data-step="2" style="cursor: pointer; text-align: center; flex: 1;">
-                            <div style="width: 60px; height: 60px; background: #1a1a1a; border: 4px solid #cd5c5c; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">2</div>
-                            <p style="color: #fff; font-weight: bold;">Reality</p>
-                            <p style="color: #d0d0d0; font-size: 0.8rem;">Slavery's Horror</p>
-                        </div>
-                        <div class="timeline-point" data-step="3" style="cursor: pointer; text-align: center; flex: 1;">
-                            <div style="width: 60px; height: 60px; background: #1a1a1a; border: 4px solid #8b4513; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">3</div>
-                            <p style="color: #fff; font-weight: bold;">Hypocrisy</p>
-                            <p style="color: #d0d0d0; font-size: 0.8rem;">Church & State</p>
-                        </div>
-                        <div class="timeline-point" data-step="4" style="cursor: pointer; text-align: center; flex: 1;">
-                            <div style="width: 60px; height: 60px; background: #1a1a1a; border: 4px solid #daa520; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">4</div>
-                            <p style="color: #fff; font-weight: bold;">Hope</p>
-                            <p style="color: #d0d0d0; font-size: 0.8rem;">Path Forward</p>
-                        </div>
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🔥</span>
+                        必要なのは議論か？
                     </div>
-                </div>
-                <div id="timeline-content" style="margin-top: 30px; padding: 20px; background: rgba(139, 69, 19, 0.1); border-radius: 8px; min-height: 150px;">
-                    <p style="color: #daa520; font-size: 1.2rem; text-align: center;">👆 Click a point on the timeline to explore that section</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- INTERACTIVE: 1852 vs 2025 COMPARISON -->
-        <div class="dashboard-grid" id="section-comparison" style="display: none;">
-            <div class="card" style="grid-column: 1 / -1;">
-                <h2>⚖️ 1852 vs 2025: Translation Slider</h2>
-                <p style="margin-bottom: 20px;">Slide to see how Douglass's words would be expressed today</p>
-                <div style="margin: 30px 0;">
-                    <input type="range" id="translation-slider" min="0" max="100" value="0" style="width: 100%; height: 8px; background: linear-gradient(to right, #8b4513, #daa520); border-radius: 4px; cursor: pointer;">
-                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                        <span style="color: #8b4513; font-weight: bold;">📜 1852 Original</span>
-                        <span style="color: #daa520; font-weight: bold;">📱 2025 Translation</span>
-                    </div>
-                </div>
-                <div id="translation-display" style="padding: 30px; background: rgba(0,0,0,0.3); border-radius: 8px; min-height: 200px; transition: all 0.3s ease;">
-                    <div class="quote" id="original-text">
-                        "What, to the American slave, is your 4th of July? I answer: a day that reveals to him, more than all other days in the year, the gross injustice and cruelty to which he is the constant victim."
-                    </div>
-                    <div id="modern-text" style="opacity: 0; display: none; background-color: rgba(218, 165, 32, 0.1); border-left: 4px solid #daa520; padding: 16px; margin-top: 16px; border-radius: 2px; color: #daa520;">
-                        "What does July 4th mean to Black Americans still facing systemic injustice? It's the day that exposes, more clearly than any other, the brutal inequality they experience every single day of their lives."
+                    <div class="card-content">
+                        <div class="highlight-quote">
+                            説得力のある議論ではなく、<span class="emphasis">焼けるような皮肉</span>が必要である
+                        </div>
+                        <p>ダグラスは、奴隷制度の明白な悪に対して冷静な議論は不要であり、激しい非難と皮肉こそが状況にふさわしいと主張する。</p>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>🔊 Voice Comparison</h2>
-                <p>Listen to the difference in tone and delivery</p>
-                <div style="margin: 20px 0;">
-                    <button class="tone-btn" onclick="speak1852()" style="width: 100%; margin-bottom: 10px;">🎙️ Hear 1852 Style</button>
-                    <button class="tone-btn" onclick="speak2025()" style="width: 100%;">🔊 Hear 2025 Style</button>
-                </div>
-                <p style="font-size: 0.85rem; color: #d0d0d0; font-style: italic;">Note: Uses browser text-to-speech</p>
+            <div class="tone-buttons">
+                <button class="tone-btn" data-tone="irony">Scorching Irony（焼けるような皮肉）</button>
+                <button class="tone-btn" data-tone="reproach">Blasting Reproach（激しい非難）</button>
+                <button class="tone-btn" data-tone="sarcasm">Withering Sarcasm（辛辣な皮肉）</button>
+                <button class="tone-btn" data-tone="rebuke">Stern Rebuke（厳しい叱責）</button>
             </div>
 
-            <div class="card">
-                <h2>📊 Key Differences</h2>
-                <h3>Language Evolution</h3>
-                <ul>
-                    <li><strong>Length:</strong> 2-hour speech → 3-minute video</li>
-                    <li><strong>Tone:</strong> Formal oratory → Conversational</li>
-                    <li><strong>References:</strong> Biblical → Pop culture</li>
-                    <li><strong>Format:</strong> One-way speech → Interactive</li>
-                </ul>
-            </div>
-        </div>
+            <div class="quote-display" id="quote-display"></div>
+        </section>
 
-        <!-- INTERACTIVE: QUIZ -->
-        <div class="dashboard-grid" id="section-quiz" style="display: none;">
-            <div class="card" style="grid-column: 1 / -1;">
-                <h2>❓ How Would You Respond?</h2>
-                <p>Douglass asks powerful questions. How would audiences in 1852 vs 2025 answer?</p>
-                <div id="quiz-container" style="margin-top: 30px;">
-                    <div class="quiz-question" data-q="1">
-                        <div class="quote" style="font-size: 1.1rem; margin-bottom: 20px;">
-                            "What, to the American slave, is your 4th of July?"
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-                            <button class="quiz-btn" onclick="selectAnswer(1, 'celebration')" style="padding: 20px; background: rgba(139, 69, 19, 0.2); border: 2px solid #8b4513; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
-                                <strong>1852 Likely Response:</strong><br>
-                                "A celebration of freedom for all"
-                            </button>
-                            <button class="quiz-btn" onclick="selectAnswer(1, 'hypocrisy')" style="padding: 20px; background: rgba(218, 165, 32, 0.2); border: 2px solid #daa520; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
-                                <strong>2025 Likely Response:</strong><br>
-                                "A reminder of America's hypocrisy"
-                            </button>
-                        </div>
-                        <div id="answer-1" style="display: none; padding: 20px; background: rgba(205, 92, 92, 0.2); border-left: 4px solid #cd5c5c; border-radius: 4px;">
-                            <p><strong>Douglass's Answer:</strong> "A day that reveals gross injustice and cruelty." Most 1852 audiences were shocked by this framing. Today, this critique is more widely understood and accepted.</p>
+        <!-- Section 2: The Reality of Slavery -->
+        <section class="section" id="section-2">
+            <h2 class="section-title">奴隷制度の現実</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🏭</span>
+                        国内奴隷貿易の現実
+                    </div>
+                    <div class="card-content">
+                        <p>奴隷は市場のために<span class="emphasis">「豚のように育てられる」</span></p>
+                        <p style="margin-top: 15px;"><span class="emphasis">「人間の群れ（droves of human stock）」</span>がボルチモアなどの市場へ駆り立てられる</p>
+                        <div class="highlight-quote">
+                            人間が家畜のように売買され、家族が引き裂かれ、人間の尊厳が完全に無視される残虐な現実
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: 30px; text-align: center;">
-                    <button onclick="nextQuizQuestion()" style="padding: 15px 40px; background: #8b4513; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1.1rem;">Next Question →</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- INTERACTIVE: EMOTION METER -->
-        <div class="dashboard-grid" id="section-emotion" style="display: none;">
-            <div class="card" style="grid-column: 1 / -1;">
-                <h2>📊 Emotional Intensity Throughout the Speech</h2>
-                <p>Track how Douglass's tone shifts from section to section</p>
-                <div style="margin: 30px 0; height: 300px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 20px; position: relative; overflow: hidden;">
-                    <svg viewBox="0 0 800 250" style="width: 100%; height: 100%;" preserveAspectRatio="xMidYMid meet">
-                        <polyline points="50,200 200,150 350,100 500,120 650,180 750,160" stroke="#cd5c5c" stroke-width="3" fill="none"/>
-                        <circle cx="50" cy="200" r="5" fill="#daa520"/>
-                        <circle cx="200" cy="150" r="5" fill="#cd5c5c"/>
-                        <circle cx="350" cy="100" r="5" fill="#ff6347"/>
-                        <circle cx="500" cy="120" r="5" fill="#cd5c5c"/>
-                        <circle cx="650" cy="180" r="5" fill="#8b4513"/>
-                        <circle cx="750" cy="160" r="5" fill="#daa520"/>
-                        <text x="40" y="230" fill="#d0d0d0" font-size="12">Opening</text>
-                        <text x="180" y="230" fill="#d0d0d0" font-size="12">Reality</text>
-                        <text x="330" y="230" fill="#d0d0d0" font-size="12">Peak Anger</text>
-                        <text x="480" y="230" fill="#d0d0d0" font-size="12">Hypocrisy</text>
-                        <text x="630" y="230" fill="#d0d0d0" font-size="12">Sorrow</text>
-                        <text x="720" y="230" fill="#d0d0d0" font-size="12">Hope</text>
-                    </svg>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>😤 Anger Level</h2>
-                <div style="margin: 20px 0;">
-                    <div style="background: rgba(205, 92, 92, 0.2); height: 40px; border-radius: 20px; overflow: hidden; position: relative;">
-                        <div style="background: linear-gradient(to right, #cd5c5c, #ff6347); width: 85%; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; font-weight: bold; color: #fff;">85%</div>
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">⚖️</span>
+                        逃亡奴隷法による賄賂
                     </div>
-                </div>
-                <p style="font-size: 0.9rem;">Peak: "Scorching irony" section</p>
-            </div>
-
-            <div class="card">
-                <h2>💔 Sorrow Level</h2>
-                <div style="margin: 20px 0;">
-                    <div style="background: rgba(139, 69, 19, 0.2); height: 40px; border-radius: 20px; overflow: hidden;">
-                        <div style="background: linear-gradient(to right, #8b4513, #a0522d); width: 70%; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; font-weight: bold; color: #fff;">70%</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.9rem;">Peak: Slave trade description</p>
-            </div>
-
-            <div class="card">
-                <h2>✨ Hope Level</h2>
-                <div style="margin: 20px 0;">
-                    <div style="background: rgba(218, 165, 32, 0.2); height: 40px; border-radius: 20px; overflow: hidden;">
-                        <div style="background: linear-gradient(to right, #daa520, #ffd700); width: 60%; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 15px; font-weight: bold; color: #1a1a1a;">60%</div>
-                    </div>
-                </div>
-                <p style="font-size: 0.9rem;">Peak: Constitution section</p>
-            </div>
-        </div>
-
-        <!-- INTERACTIVE: SOCIAL MEDIA VIEW -->
-        <div class="dashboard-grid" id="section-social" style="display: none;">
-            <div class="card">
-                <h2>📱 If Douglass Had Twitter</h2>
-                <div style="background: rgba(29, 155, 240, 0.1); border: 2px solid #1d9bf0; border-radius: 12px; padding: 15px; margin: 15px 0;">
-                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <div style="width: 48px; height: 48px; background: #8b4513; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-right: 10px;">FD</div>
-                        <div>
-                            <strong style="color: #daa520;">Frederick Douglass</strong><br>
-                            <span style="color: #888; font-size: 0.85rem;">@FrederickDouglass · July 5, 1852</span>
+                    <div class="card-content">
+                        <div class="chart-container">
+                            <p><strong>裁判官の報酬の不平等：</strong></p>
+                            <div class="bar-chart">
+                                <div class="bar" style="height: 100%;">
+                                    <div class="bar-value">$10</div>
+                                    <div class="bar-label">奴隷に引き渡す</div>
+                                </div>
+                                <div class="bar" style="height: 50%;">
+                                    <div class="bar-value">$5</div>
+                                    <div class="bar-label">引き渡さない</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="highlight-quote">
+                            <span class="emphasis">「最も汚らわしく悪魔的なすべての人間の法令」</span>
                         </div>
                     </div>
-                    <p style="color: #f5f5f5; margin: 10px 0; line-height: 1.5;">
-                        What does July 4th mean to enslaved Americans? A day that reveals the brutal inequality they face every single day. Your "freedom" celebration is built on their chains. 🔗💔
-                    </p>
-                    <div style="display: flex; gap: 40px; margin-top: 15px; color: #888; font-size: 0.9rem;">
-                        <span>💬 15.2K</span>
-                        <span>🔁 47.8K</span>
-                        <span>❤️ 89.3K</span>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">📜</span>
+                        国の法的な位置づけ
+                    </div>
+                    <div class="card-content">
+                        <p>逃亡奴隷法により：</p>
+                        <div class="kpi-value">全国制度化</div>
+                        <p>奴隷制度は<span class="emphasis">「もはや単なる州の制度ではなく、合衆国全体の制度となった」</span></p>
+                        <p style="margin-top: 15px;">北部の州も奴隷狩りに加担することを法的に強制され、国全体が奴隷制度の共犯者となった。</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>📸 Instagram Post</h2>
-                <div style="border: 1px solid #444; border-radius: 8px; overflow: hidden;">
-                    <div style="background: linear-gradient(135deg, #8b4513, #cd5c5c); height: 200px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; text-align: center; padding: 20px;">
-                        "This Fourth of July<br>is YOURS, not mine."
+        <!-- Section 3: Hypocrisy and the Church -->
+        <section class="section" id="section-3">
+            <h2 class="section-title">教会と国民の偽善</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">⛪</span>
+                        奴隷制度の「防波堤」
                     </div>
-                    <div style="padding: 15px; background: #2d2d2d;">
-                        <p style="margin-bottom: 10px;"><strong style="color: #daa520;">frederick_douglass</strong> You celebrate freedom while millions remain enslaved. The hypocrisy is deafening. 📣</p>
-                        <p style="color: #888; font-size: 0.85rem;">Liked by abolitionists_united and 12,847 others</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🎥 TikTok Script</h2>
-                <div style="background: rgba(0,0,0,0.5); border: 2px solid #ff0050; border-radius: 12px; padding: 15px;">
-                    <p style="color: #ff0050; font-weight: bold; margin-bottom: 10px;">@FrederickDouglassSpeaks</p>
-                    <p style="margin-bottom: 15px;"><strong>Audio:</strong> Dramatic orchestral music</p>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                        <p style="font-size: 0.9rem; line-height: 1.6;">
-                            <strong>0:00-0:03:</strong> "POV: It's July 4th, 1852..."<br>
-                            <strong>0:03-0:06:</strong> [Show fireworks, celebrations]<br>
-                            <strong>0:06-0:10:</strong> "But you're enslaved..."<br>
-                            <strong>0:10-0:15:</strong> [Cut to chains, contrast]<br>
-                            <strong>0:15-0:20:</strong> "This is America's hypocrisy." 💔
-                        </p>
-                    </div>
-                    <p style="color: #888; font-size: 0.85rem;">♬ Original Audio · 2.3M views</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>📺 YouTube Title</h2>
-                <div style="background: rgba(255, 0, 0, 0.1); border: 2px solid #ff0000; border-radius: 8px; padding: 15px;">
-                    <p style="color: #ff0000; font-size: 1.1rem; font-weight: bold; margin-bottom: 10px;">
-                        "The DARK TRUTH About July 4th That Nobody Talks About 😱"
-                    </p>
-                    <p style="font-size: 0.9rem; color: #d0d0d0;">
-                        <strong>Frederick Douglass Explains</strong> · 847K views · 2 days ago
-                    </p>
-                    <p style="margin-top: 15px; font-size: 0.85rem; line-height: 1.6;">
-                        In 1852, Frederick Douglass delivered one of the most powerful speeches in American history. What he said will shock you... 👀 #history #july4th #truth
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 0: SPEECH ANALYSIS OVERVIEW -->
-        <div class="dashboard-grid" id="section-0" style="display: none;">
-            <!-- Card 0.1: Overview -->
-            <div class="card">
-                <h2>Speech Analysis Overview</h2>
-                <p><strong>Title:</strong> "Fourth of July" Oration</p>
-                <p><strong>Speaker:</strong> Frederick Douglass</p>
-                <p><strong>Date:</strong> July 5, 1852</p>
-                <p><strong>Location:</strong> Corinthian Hall, Rochester, New York</p>
-                <h3>Context</h3>
-                <p>Delivered just 76 years after American independence, Douglass confronts the nation's hypocrisy. While celebrating freedom, America enslaves over 3 million Black people and enforces slavery through increasingly oppressive federal laws.</p>
-                <h3>Central Thesis</h3>
-                <p>The Fourth of July exposes America's moral bankruptcy. The celebration of liberty for some while others remain enslaved is not just contradictory—it is a calculated mockery of human dignity.</p>
-            </div>
-
-            <!-- Card 0.2: Historical Context -->
-            <div class="card">
-                <h2>Historical Context (1852)</h2>
-                <h3>Key Events Leading to This Speech</h3>
-                <ul>
-                    <li><strong>1776:</strong> Declaration of Independence promises "all men are created equal"</li>
-                    <li><strong>1787:</strong> Constitution written (with slavery compromises)</li>
-                    <li><strong>1793:</strong> First Fugitive Slave Act</li>
-                    <li><strong>1850:</strong> Compromise of 1850 includes harsh new Fugitive Slave Act</li>
-                    <li><strong>1852:</strong> Douglass's speech challenges the nation's betrayal of its founding principles</li>
-                </ul>
-                <h3>The Fugitive Slave Act of 1850</h3>
-                <p>This law nationalized slavery, requiring Northern citizens to participate in slavery's enforcement or face heavy penalties. It was the immediate catalyst for Douglass's radical critique.</p>
-            </div>
-
-            <!-- Card 0.3: Rhetorical Techniques -->
-            <div class="card">
-                <h2>Douglass's Rhetorical Genius</h2>
-                <h3>Techniques Used</h3>
-                <ul>
-                    <li><strong>Parallelism:</strong> Contrasting pairs expose hypocrisy ("Your independence... My bondage")</li>
-                    <li><strong>Irony:</strong> Using celebration language to describe enslavement</li>
-                    <li><strong>Metaphor:</strong> Rivers, chains, temple imagery</li>
-                    <li><strong>Direct Address:</strong> Speaking to the audience as accomplices</li>
-                    <li><strong>Biblical References:</strong> Psalm 137, prophetic language</li>
-                    <li><strong>Vivid Description:</strong> Sensory details of slave trade horrors</li>
-                </ul>
-                <h3>Purpose</h3>
-                <p>Rather than appeal to reason alone, Douglass mobilizes emotion, shame, and moral urgency to awaken conscience.</p>
-            </div>
-        </div>
-
-        <!-- SECTION 1: CORE CONTRADICTION -->
-        <div class="dashboard-grid" id="section-1">
-            <!-- Card 1.1: The Central Paradox -->
-            <div class="card active">
-                <h2>The Core Contradiction</h2>
-                <p><strong>Douglass's Central Question:</strong> Why am I called upon to celebrate independence that is not mine?</p>
-                <div class="quote">
-                    "This Fourth July is yours, not mine. You may rejoice, I must mourn."
-                </div>
-                <p>Douglass exposes the fundamental hypocrisy: Americans celebrate freedom while enslaving millions of their own people.</p>
-                <h3>The Distance</h3>
-                <p>The principles of the Declaration of Independence are denied to Black Americans, revealing:</p>
-                <ul>
-                    <li>False equality and fabricated liberty</li>
-                    <li>National greatness built on bondage</li>
-                    <li>Mockery of justice through legal slavery</li>
-                </ul>
-            </div>
-
-            <!-- Card 1.2: What is Needed -->
-            <div class="card active">
-                <h2>The Rhetorical Strategy</h2>
-                <h3>Argument vs. Irony</h3>
-                <p>Douglass argues that mere persuasive debate cannot address slavery's evil:</p>
-                <div class="quote">
-                    "At a time like this, scorching irony, not convincing argument, is needed... For it is not light that is needed, but fire; it is not the gentle shower, but thunder."
-                </div>
-                <h3>The Case Against Debate</h3>
-                <p>Douglass asserts that slavery's fundamental wrongness requires no argument:</p>
-                <ul>
-                    <li>The enslaved person's humanity is proven by slaveholder law itself</li>
-                    <li>73 capital crimes in Virginia apply only to Black men (vs. 2 for white men)</li>
-                    <li>Laws forbidding slaves from reading/writing prove their moral and intellectual capacity</li>
-                </ul>
-                <p><strong>Therefore:</strong> Emotional denunciation and moral awakening, not debate, must move the nation.</p>
-            </div>
-
-            <!-- Card 1.3: The Emotional Call -->
-            <div class="card active">
-                <h2>Douglass's Tone & Emotion</h2>
-                <p>Douglass declares he will employ:</p>
-                <div class="tone-container">
-                    <button class="tone-btn" data-tone="irony">🔥 Scorching Irony</button>
-                    <button class="tone-btn" data-tone="reproach">⚡ Blasting Reproach</button>
-                    <button class="tone-btn" data-tone="sarcasm">🌪️ Withering Sarcasm</button>
-                    <button class="tone-btn" data-tone="rebuke">⚔️ Stern Rebuke</button>
-                </div>
-                <div class="tone-display" id="tone-display">
-                    <p>Select a tone above to see an example from Douglass's rhetoric...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTION 2: SLAVERY'S REALITY -->
-        <div class="dashboard-grid" id="section-2" style="display: none;">
-            <!-- Card 2.1: The Slave Trade -->
-            <div class="card">
-                <h2>The Internal Slave Trade</h2>
-                <h3>Market Mechanics</h3>
-                <p>Douglass describes the brutal reality of domestic slavery commerce:</p>
-                <div class="quote">
-                    "Here you will see men and women, reared like swine, for the market... droves of human stock."
-                </div>
-                <h3>The Trade in Numbers</h3>
-                <p>Baltimore's slave market, headed by Austin Woldfolk, operated a systematic commerce in human beings:</p>
-                <ul>
-                    <li>Handbills advertised: "CASH FOR NEGROES"</li>
-                    <li>Individuals extracted from families through brutal transactions</li>
-                    <li>Driven in chains at night to ships bound for New Orleans</li>
-                    <li>Sold as commodities at auction, their families sundered forever</li>
-                </ul>
-                <p><strong>Key Horror:</strong> A mother carrying an infant, her speed faltering under weight and chains, receives the lash.</p>
-            </div>
-
-            <!-- Card 2.2: Judicial Corruption -->
-            <div class="card">
-                <h2>The Fugitive Slave Law (1850)</h2>
-                <h3>Legalized Corruption</h3>
-                <p>Douglass exposes the "hell-black enactment" that bribes judges to return the enslaved:</p>
-                <div class="stat-box">
-                    <div class="stat-number">$10 vs. $5</div>
-                    <div class="stat-label">Judge's fee for sending a Black person into slavery vs. fee for refusing</div>
-                </div>
-                <h3>Judicial Mockery</h3>
-                <ul>
-                    <li>The enslaved cannot testify in their own defense</li>
-                    <li>Only the accuser's testimony is heard</li>
-                    <li>The oath of "any two villains" is sufficient for conviction</li>
-                    <li>Over 40 Americans captured and enslaved in just two years</li>
-                </ul>
-                <div class="quote">
-                    "In tyrant-killing, king-hating, people-loving, democratic, Christian America, the seats of justice are filled with judges who hold their offices under an open and palpable bribe."
-                </div>
-            </div>
-
-            <!-- Card 2.3: National Scope -->
-            <div class="card">
-                <h2>Slavery Nationalized</h2>
-                <h3>From State Institution to National Shame</h3>
-                <p>By the Fugitive Slave Law (1850), slavery was no longer merely a Southern institution:</p>
-                <ul>
-                    <li>Mason-Dixon's line obliterated</li>
-                    <li>"New York has become as Virginia"</li>
-                    <li>Northern citizens forced to participate in slavery's enforcement</li>
-                    <li>Every American becomes a potential slave-hunter</li>
-                </ul>
-                <div class="quote">
-                    "Slavery has been nationalized in its most horrible and revolting form."
-                </div>
-                <h3>The Constitutional Perversion</h3>
-                <p>What once was a state power is now national law—the entire machinery of American government enforces bondage across all territories.</p>
-            </div>
-        </div>
-
-        <!-- SECTION 3: HYPOCRISY & CHURCH -->
-        <div class="dashboard-grid" id="section-3" style="display: none;">
-            <!-- Card 3.1: Religious Contradiction -->
-            <div class="card">
-                <h2>The Church's Betrayal</h2>
-                <h3>Expected: Moral Leadership | Reality: Complicity</h3>
-                <p>Douglass condemns American churches for supporting slavery despite their Christian claims:</p>
-                <div class="quote">
-                    "The American church is guilty... it is superlatively guilty when viewed in connection with its ability to abolish slavery."
-                </div>
-                <h3>The Sin of Omission</h3>
-                <ul>
-                    <li>Churches possess the power to end slavery immediately</li>
-                    <li>Yet they remain "stupidly blind, or most wickedly indifferent"</li>
-                    <li>The pulpit actively defends and perpetuates the system</li>
-                </ul>
-                <h3>Comparison: England vs. America</h3>
-                <p>In England, the church championed West Indian slave emancipation. In America, the church defends slavery itself.</p>
-            </div>
-
-            <!-- Card 3.2: Theological Corruption -->
-            <div class="card">
-                <h2>Religious Hypocrisy</h2>
-                <h3>Perverted Doctrine</h3>
-                <p>American ministers teach doctrines that sanctify slavery:</p>
-                <ul>
-                    <li>"Man may properly be a slave"</li>
-                    <li>"Master-slave relations are ordained of God"</li>
-                    <li>"Returning escaped slaves is a Christian duty"</li>
-                </ul>
-                <div class="quote">
-                    "Welcome infidelity! Welcome atheism! In preference to the gospel as preached by those Divines!"
-                </div>
-                <h3>The Crisis of Conscience</h3>
-                <p>Douglass argues that this perversion of Christianity creates more infidels than Thomas Paine or Voltaire ever could.</p>
-                <h3>Named Hypocrites</h3>
-                <p><strong>Pro-slavery clergy:</strong> The Lords of Buffalo, the Springs of New York, the Lathrops of Auburn, the Coxes and Spencers of Brooklyn, the Gannets and Sharps of Boston, the Deweys of Washington.</p>
-            </div>
-
-            <!-- Card 3.3: National Hypocrisy -->
-            <div class="card">
-                <h2>America's Contradictions</h2>
-                <h3>Rhetorical vs. Actual Behavior</h3>
-                <div class="comparison-grid">
-                    <div class="comparison-item positive">
-                        <h4>Democratic Rhetoric:</h4>
-                        <p>"All men are created equal, endowed with inalienable rights..."</p>
-                    </div>
-                    <div class="comparison-item against">
-                        <h4>Actual Practice:</h4>
-                        <p>1/7 of the nation held in bondage "worse than ages" of British oppression</p>
+                    <div class="card-content">
+                        <p>アメリカの教会は<span class="emphasis">「抑圧者の側に立っている」</span></p>
+                        <div class="highlight-quote">
+                            教会は<span class="emphasis">「奴隷制度の防波堤」</span>である
+                        </div>
+                        <p style="margin-top: 15px;">教会は奴隷解放の力を持っているにもかかわらず、それを行わない<span class="emphasis">「罪（omission）」</span>がある。宗教的権威が道徳的責任を放棄している。</p>
                     </div>
                 </div>
-                <div class="comparison-grid">
-                    <div class="comparison-item positive">
-                        <h4>Foreign Policy:</h4>
-                        <p>Shelter fugitives from Hungary, Ireland, France; harbor them with banquets and ovations</p>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">❌</span>
+                        偽善の非難
                     </div>
-                    <div class="comparison-item against">
-                        <h4>Domestic Policy:</h4>
-                        <p>Hunt, arrest, shoot, and kill fugitives from American slavery</p>
+                    <div class="card-content">
+                        <div class="highlight-quote" style="background: rgba(139, 0, 0, 0.5); font-size: 1.1em;">
+                            「あなた方の共和主義は見せかけ、あなた方の人道主義は卑劣な見せかけ、あなた方のキリスト教は嘘という烙印を押しています」
+                        </div>
                     </div>
                 </div>
-                <div class="comparison-grid">
-                    <div class="comparison-item positive">
-                        <h4>Revolutionary Principle:</h4>
-                        <p>Americans shed blood to resist a "three-penny tax on tea"</p>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🌍</span>
+                        国内と国外の逃亡者
                     </div>
-                    <div class="comparison-item against">
-                        <h4>Enslaved Reality:</h4>
-                        <p>Americans "wring the last hard-earned farthing from the grasp of the black laborers of your country"</p>
+                    <div class="card-content">
+                        <p><strong>矛盾する二つの姿勢：</strong></p>
+                        <ul class="comparison-list">
+                            <li>✅ <span class="emphasis">国外からの逃亡者</span>：招き入れ、宴会で歓待する</li>
+                            <li>❌ <span class="emphasis">国内からの逃亡者</span>：広告し、狩り立て、逮捕し、撃ち、殺している</li>
+                        </ul>
+                        <p style="margin-top: 15px;">アメリカは海外の抑圧された人々には寛大でありながら、自国の奴隷には残酷である。</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- SECTION 4: CONCLUSION & HOPE -->
-        <div class="dashboard-grid" id="section-4" style="display: none;">
-            <!-- Card 4.1: Constitutional Hope -->
-            <div class="card">
-                <h2>The Constitution as Liberty Document</h2>
-                <h3>Against the Pro-Slavery Reading</h3>
-                <p>Douglass rejects the claim that the Constitution sanctions slavery:</p>
-                <div class="quote">
-                    "Interpreted, as it ought to be interpreted, the Constitution is a GLORIOUS LIBERTY DOCUMENT."
+        <!-- Section 4: Conclusion and Hope -->
+        <section class="section" id="section-4">
+            <h2 class="section-title">結論と希望</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">📜</span>
+                        憲法は「自由の文書」
+                    </div>
+                    <div class="card-content">
+                        <p>憲法が奴隷制を支持しているという見解に対し、ダグラスはそれを<span class="emphasis">「中傷」</span>とする</p>
+                        <div class="highlight-quote" style="background: rgba(212, 175, 55, 0.2);">
+                            正しく解釈されるならば、憲法は<span class="emphasis" style="font-size: 1.3em;">GLORIOUS LIBERTY DOCUMENT（栄光ある自由の文書）</span>である
+                        </div>
+                        <p style="margin-top: 15px;">ダグラスは憲法を奴隷制廃止の法的根拠として捉え、希望の基盤とする。</p>
+                    </div>
                 </div>
-                <h3>The Evidence</h3>
-                <ul>
-                    <li>The words "slavery," "slaveholder," and "slave" appear nowhere in the Constitution</li>
-                    <li>Its preamble explicitly advances justice, domestic tranquility, and general welfare</li>
-                    <li>It contains "principles and purposes, entirely hostile to the existence of slavery"</li>
-                </ul>
-                <h3>Douglass's Affirmation</h3>
-                <p>Unlike those who argue the Constitution inherently supports slavery, Douglass insists it must be interpreted through principles of human liberty and justice, not perpetuating evil.</p>
-            </div>
 
-            <!-- Card 4.2: Forces for Change -->
-            <div class="card">
-                <h2>Why Hope Is Justified</h2>
-                <h3>The Arm of the Lord</h3>
-                <div class="quote">
-                    "The arm of the Lord is not shortened, and the doom of slavery is certain."
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🌅</span>
+                        未来への確信
+                    </div>
+                    <div class="card-content">
+                        <p><strong>ダグラスが「この国に対して絶望していない」理由：</strong></p>
+                        <ul class="hope-list">
+                            <li>独立宣言に含まれる偉大な原則</li>
+                            <li>時代の明白な傾向（知識の普及、商業、風、蒸気、稲妻など）</li>
+                        </ul>
+                    </div>
                 </div>
-                <h3>Historical Tendencies Supporting Freedom</h3>
-                <ul>
-                    <li><strong>Knowledge:</strong> "Intelligence is penetrating the darkest corners of the globe"</li>
-                    <li><strong>Commerce:</strong> "The arm of commerce has borne away the gates of the strong city"</li>
-                    <li><strong>Technology:</strong> "Wind, steam, and lightning are chartered agents" of progress</li>
-                    <li><strong>Communication:</strong> "From Boston to London is now a holiday excursion"</li>
-                    <li><strong>Revelation:</strong> "The Celestial Empire, the mystery of ages, is being solved"</li>
-                </ul>
-                <p>These forces render slavery impossible to hide or defend.</p>
-            </div>
 
-            <!-- Card 4.3: The Call to Action -->
-            <div class="card">
-                <h2>Douglass's Covenant</h2>
-                <h3>The Poet's Pledge (William Lloyd Garrison)</h3>
-                <div class="quote">
-                    "God speed the year of jubilee / The wide world o'er! / When from their galling chains set free, / The oppress'd shall vilely bend the knee no more..."
-                </div>
-                <h3>Douglass's Personal Vow</h3>
-                <div class="quote">
-                    "With head, and heart, and hand I'll strive / To break the rod, and rend the gyve, / The spoiler of his prey deprive / So witness Heaven! / And never from my chosen post, / Whate'er the peril or the cost, / Be driven."
-                </div>
-                <h3>The Mission</h3>
-                <p>Douglass commits to the "great mission of the slave's redemption from his chains"—not through passive hope, but through active struggle for justice until freedom prevails for all.</p>
-            </div>
-        </div>
-
-        <!-- SECTION 5: MODERN TRANSLATION -->
-        <div class="dashboard-grid" id="section-5" style="display: none;">
-            <!-- Card 5.1: Contemporary Relevance -->
-            <div class="card">
-                <h2>Why Douglass Still Matters Today</h2>
-                <h3>Speaking to Modern Injustice</h3>
-                <p>Douglass's critique of American hypocrisy remains urgently relevant:</p>
-                <ul>
-                    <li><strong>Empty Rhetoric:</strong> Nations proclaim values while violating them systematically</li>
-                    <li><strong>Legal Corruption:</strong> Laws designed to protect actually entrench inequality</li>
-                    <li><strong>Institutional Complicity:</strong> Religious and civic institutions enable injustice</li>
-                    <li><strong>Normalized Brutality:</strong> Violence against marginalized groups becomes routine</li>
-                </ul>
-                <h3>Douglass's Call</h3>
-                <p>He demands moral accountability: Stop debating; start acting. Hypocrisy exposed is hypocrisy condemned.</p>
-            </div>
-
-            <!-- Card 5.2: Modern Parallels -->
-            <div class="card">
-                <h2>Douglass in Modern Language</h2>
-                <h3>Translation of Core Arguments</h3>
-                <div class="quote">
-                    <strong>Original:</strong> "This Fourth July is yours, not mine."<br><br>
-                    <strong>Modern:</strong> "You celebrate freedom while communities like mine face systemic exclusion from the benefits of citizenship."
-                </div>
-                <div class="quote">
-                    <strong>Original:</strong> "At a time like this, scorching irony, not convincing argument, is needed."<br><br>
-                    <strong>Modern:</strong> "We need accountability and shame, not endless debate with bad-faith actors."
-                </div>
-                <div class="quote">
-                    <strong>Original:</strong> "The American church is superlatively guilty."<br><br>
-                    <strong>Modern:</strong> "Institutions with power to create change remain silent or complicit."
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">✊</span>
+                        行動の誓い
+                    </div>
+                    <div class="card-content">
+                        <div class="highlight-quote" style="background: rgba(212, 175, 55, 0.2);">
+                            ダグラスは<span class="emphasis">「頭と心と手をもって、奴隷を彼の鎖からの救済という偉大な使命の中で、努力し続ける」</span>と誓う
+                        </div>
+                        <p style="margin-top: 15px;">演説は非難だけでなく、具体的な行動への献身で締めくくられる。</p>
+                    </div>
                 </div>
             </div>
-
-            <!-- Card 5.3: Universal Principles -->
-            <div class="card">
-                <h2>Universal Principles from Douglass</h2>
-                <h3>What We Learn</h3>
-                <ul>
-                    <li><strong>Hypocrisy is Political:</strong> Exposed contradictions are tools for power and accountability</li>
-                    <li><strong>Emotion Mobilizes Change:</strong> Facts alone don't move people; moral clarity does</li>
-                    <li><strong>Complicity is Active:</strong> Silence and inaction are choices, not neutrality</li>
-                    <li><strong>Institutions Require Reform:</strong> Laws, churches, and governments must be forced to align with stated values</li>
-                    <li><strong>Hope Requires Action:</strong> Faith in justice is meaningless without struggle</li>
-                </ul>
-                <h3>The Challenge to Us</h3>
-                <p>Where is our "scorching irony"? What hypocrisies do we see but fail to name? Douglass challenges each generation to do the work of justice, not merely talk about it.</p>
-            </div>
-        </div>
+        </section>
     </div>
 
-    <footer>
-        <p><strong>Frederick Douglass's "Fourth of July" Speech (1852)</strong></p>
-        <p>Delivered at Corinthian Hall, Rochester, New York | July 5, 1852</p>
-        <p>This interactive dashboard visualizes the major arguments and emotional appeals of Douglass's devastating critique of American hypocrisy regarding slavery.</p>
-    </footer>
-
     <script>
-        // Section Navigation
-        const sectionBtns = document.querySelectorAll('.section-btn');
-        const sections = ['section-0', 'section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-timeline', 'section-comparison', 'section-quiz', 'section-emotion', 'section-social'];
-
-        sectionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                sectionBtns.forEach(b => b.classList.remove('active'));
-                // Add active to clicked button
-                btn.classList.add('active');
-
-                // Hide all cards in all sections
-                document.querySelectorAll('.card').forEach(card => {
-                    card.classList.remove('active');
-                });
-
-                // Hide all sections
-                sections.forEach(section => {
-                    const el = document.getElementById(section);
-                    if (el) el.style.display = 'none';
-                });
-
-                // Show selected section
-                const selectedSection = 'section-' + btn.dataset.section;
-                const el = document.getElementById(selectedSection);
-                if (el) {
-                    el.style.display = 'grid';
-                    // Activate all cards in this section
-                    const sectionCards = el.querySelectorAll('.card');
-                    sectionCards.forEach(card => card.classList.add('active'));
-                }
-            });
-        });
-
-        // Tone Display
-        const toneBtns = document.querySelectorAll('.tone-btn');
-        const toneDisplay = document.getElementById('tone-display');
-
-        const toneQuotes = {
-            irony: '"What, to the American slave, is your 4th of July? A day that reveals to him...the gross injustice and cruelty to which he is the constant victim."',
-            reproach: '"To him, your celebration is a sham; your boasted liberty, an unholy license; your national greatness, swelling vanity."',
-            sarcasm: '"Your prayers and hymns, your sermons and thanksgivings...are to him mere bombast, fraud, deception, impiety, and hypocrisy—a thin veil to cover up crimes."',
-            rebuke: '"There is not a nation on the earth guilty of practices, more shocking and bloody, than are the people of these United States, at this very hour."'
+        const quotes = {
+            irony: '「この7月4日は、あなた方のものであり、私のものではありません。あなた方の独立の高い喜びは、私たちとの計り知れない距離を明らかにするだけです」— ダグラスは、独立記念日の祝賀が奴隷にとっていかに皮肉に満ちているかを示す。',
+            reproach: '「あなた方の共和主義は見せかけ、あなた方の人道主義は卑劣な見せかけ、あなた方のキリスト教は嘘という烙印を押しています」— アメリカの価値観の偽善に対する激しい非難。',
+            sarcasm: '「あなた方は国外の抑圧からの逃亡者を招き入れ、宴会で歓待しますが、自国からの逃亡者を広告し、狩り立て、逮捕し、撃ち、殺しています」— 矛盾する政策への辛辣な指摘。',
+            rebuke: '「教会は抑圧者の側に立っており、奴隷制度の防波堤となっている」— 宗教機関の道徳的失敗への厳しい叱責。'
         };
 
-        toneBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                toneBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                const tone = btn.dataset.tone;
-                toneDisplay.innerHTML = `<p>${toneQuotes[tone]}</p>`;
+        const toneButtons = document.querySelectorAll('.tone-btn');
+        const quoteDisplay = document.getElementById('quote-display');
+
+        toneButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tone = this.getAttribute('data-tone');
+                
+                toneButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                quoteDisplay.textContent = quotes[tone];
+                quoteDisplay.classList.add('active');
             });
         });
 
-        // Display cards on load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Activate first section cards
-            const firstSectionCards = document.querySelectorAll('#section-1 .card');
-            firstSectionCards.forEach(card => card.classList.add('active'));
-            
-            // Initialize all interactive features
-            initTimeline();
-            initTranslationSlider();
-            initQuiz();
+        window.addEventListener('load', () => {
+            document.getElementById('section-1').scrollIntoView({ behavior: 'smooth' });
         });
-
-        // Translation Slider with smooth transitions
-        function initTranslationSlider() {
-            const translationSlider = document.getElementById('translation-slider');
-            const originalText = document.getElementById('original-text');
-            const modernText = document.getElementById('modern-text');
-
-            if (translationSlider && originalText && modernText) {
-                translationSlider.addEventListener('input', (e) => {
-                    const value = parseInt(e.target.value);
-                    const ratio = value / 100;
-                    
-                    originalText.style.opacity = (1 - ratio);
-                    modernText.style.opacity = ratio;
-                    
-                    if (value < 50) {
-                        modernText.style.display = 'none';
-                    } else {
-                        modernText.style.display = 'block';
-                    }
-                });
-            }
-        }
-
-        // Text-to-Speech Functions with error handling
-        function speak1852() {
-            if ('speechSynthesis' in window) {
-                try {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance("What, to the American slave, is your Fourth of July? I answer: a day that reveals to him, more than all other days in the year, the gross injustice and cruelty to which he is the constant victim.");
-                    utterance.rate = 0.8;
-                    utterance.pitch = 1;
-                    window.speechSynthesis.speak(utterance);
-                } catch (err) {
-                    console.error('Speech synthesis error:', err);
-                    alert('Text-to-speech not available');
-                }
-            } else {
-                alert('Speech synthesis not supported in your browser');
-            }
-        }
-
-        function speak2025() {
-            if ('speechSynthesis' in window) {
-                try {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance("What does July 4th mean to Black Americans still facing systemic injustice? It's the day that exposes, more clearly than any other, the brutal inequality they experience every single day of their lives.");
-                    utterance.rate = 1;
-                    utterance.pitch = 1;
-                    window.speechSynthesis.speak(utterance);
-                } catch (err) {
-                    console.error('Speech synthesis error:', err);
-                    alert('Text-to-speech not available');
-                }
-            } else {
-                alert('Speech synthesis not supported in your browser');
-            }
-        }
-
-        // Quiz Functions with multiple questions
-        let currentQuizQuestion = 1;
-        const quizQuestions = {
-            1: {
-                question: "What, to the American slave, is your 4th of July?",
-                answer1: "1852 Likely Response: A celebration of freedom for all",
-                answer2: "2025 Likely Response: A reminder of America's hypocrisy",
-                result: "Douglass's Answer: A day that reveals gross injustice and cruelty. Most 1852 audiences were shocked by this framing. Today, this critique is more widely understood and accepted."
-            },
-            2: {
-                question: "What rhetorical approach does Douglass advocate?",
-                answer1: "Calm, reasoned debate",
-                answer2: "Scorching irony and emotional denunciation",
-                result: "Douglass says: Scorching irony, blasting reproach, withering sarcasm, and stern rebuke—not gentle persuasion. The nation's conscience must be shocked awake."
-            },
-            3: {
-                question: "What is Douglass's view of the Constitution?",
-                answer1: "A pro-slavery document",
-                answer2: "A glorious liberty document when properly interpreted",
-                result: "Douglass rejects claims the Constitution supports slavery. He interprets it through principles of human liberty and justice, not evil perpetuation."
-            }
-        };
-
-        function selectAnswer(q, answer) {
-            const answerDiv = document.getElementById('answer-' + q);
-            if (answerDiv) {
-                answerDiv.style.display = 'block';
-                answerDiv.innerHTML = '<p><strong>✓ ' + quizQuestions[q].result + '</strong></p>';
-            }
-        }
-
-        function nextQuizQuestion() {
-            currentQuizQuestion++;
-            if (currentQuizQuestion > 3) {
-                currentQuizQuestion = 1;
-            }
-            
-            const quiz = quizQuestions[currentQuizQuestion];
-            if (quiz) {
-                document.getElementById('quiz-container').innerHTML = `
-                    <div class="quiz-question" data-q="${currentQuizQuestion}">
-                        <div class="quote" style="font-size: 1.1rem; margin-bottom: 20px;">
-                            "${quiz.question}"
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-                            <button class="quiz-btn" onclick="selectAnswer(${currentQuizQuestion}, 'opt1')" style="padding: 20px; background: rgba(139, 69, 19, 0.2); border: 2px solid #8b4513; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
-                                <strong>${quiz.answer1}</strong>
-                            </button>
-                            <button class="quiz-btn" onclick="selectAnswer(${currentQuizQuestion}, 'opt2')" style="padding: 20px; background: rgba(218, 165, 32, 0.2); border: 2px solid #daa520; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
-                                <strong>${quiz.answer2}</strong>
-                            </button>
-                        </div>
-                        <div id="answer-${currentQuizQuestion}" style="display: none; padding: 20px; background: rgba(205, 92, 92, 0.2); border-left: 4px solid #cd5c5c; border-radius: 4px;"></div>
-                    </div>
-                `;
-            }
-        }
-
-        // Initialize Timeline Functions on DOM Ready
-        function initTimeline() {
-            const timelinePoints = document.querySelectorAll('.timeline-point');
-            timelinePoints.forEach(point => {
-                point.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const step = this.dataset.step;
-                    const timelineContent = document.getElementById('timeline-content');
-                    const contentMap = {
-                        '1': '<p><strong>Opening:</strong> Douglass poses the central question: "Why am I called upon to celebrate independence that is not mine?" This frames the entire speech\'s moral argument.</p>',
-                        '2': '<p><strong>Reality:</strong> Douglass describes the horrific internal slave trade—men and women "reared like swine for the market," families torn apart, the brutality of the auction block.</p>',
-                        '3': '<p><strong>Hypocrisy:</strong> He exposes the contradiction between American rhetoric and reality: churches defend slavery, judges are bribed, the nation hunts its own fugitive people.</p>',
-                        '4': '<p><strong>Hope:</strong> Douglass argues the Constitution is a liberty document when properly interpreted, and that historical forces (knowledge, commerce, technology) make slavery\'s doom certain.</p>'
-                    };
-                    if (contentMap[step]) {
-                        timelineContent.innerHTML = contentMap[step];
-                        timelineContent.style.animation = 'none';
-                        setTimeout(() => { timelineContent.style.animation = 'fadeIn 0.5s ease'; }, 10);
-                    }
-                });
-            });
-        }
-
-        // Update section switching to show/hide cards properly
-        sectionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                sectionBtns.forEach(b => b.classList.remove('active'));
-                // Add active to clicked button
-                btn.classList.add('active');
-
-                // Hide all cards in all sections
-                document.querySelectorAll('.card').forEach(card => {
-                    card.classList.remove('active');
-                });
-
-                // Hide all sections
-                sections.forEach(section => {
-                    const el = document.getElementById(section);
-                    if (el) el.style.display = 'none';
-                });
-
-                // Show selected section
-                const selectedSection = 'section-' + btn.dataset.section;
-                const el = document.getElementById(selectedSection);
-                if (el) {
-                    el.style.display = 'grid';
-                    // Activate all cards in this section
-                    const sectionCards = el.querySelectorAll('.card');
-                    sectionCards.forEach(card => card.classList.add('active'));
-                }
-            });
-        });
-
-        // Add fade-in animation for timeline
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-                transition: opacity 0.5s ease;
-            }
-                transition: opacity 0.5s ease;
-            }
-                transition: opacity 0.5s ease;
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
