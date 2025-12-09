@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>フレデリック・ダグラス演説ダッシュボード</title>
+    <title>Frederick Douglass Speech Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -32,35 +32,33 @@
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-            /* ヘッダー内の要素をフレックスボックスで整列 */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- 画像用の追加スタイル --- */
+        /* --- Image Styles --- */
         .profile-container {
-            width: 180px;     /* 画像のサイズ */
+            width: 180px;
             height: 180px;
             margin-bottom: 20px;
-            border-radius: 50%; /* 円形にする */
-            padding: 5px;       /* 枠線の太さ */
-            /* 金と銅のグラデーション枠線 */
+            border-radius: 50%;
+            padding: 5px;
             background: linear-gradient(135deg, #d4af37, #8b4513);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* 深い影 */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
             transition: transform 0.3s ease;
         }
 
         .profile-container:hover {
-            transform: scale(1.05); /* ホバー時に少し拡大 */
+            transform: scale(1.05);
         }
 
         .profile-image {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            object-fit: cover; /* 縦横比を維持してトリミング */
-            border: 4px solid #1a1a1a; /* 内側の暗い境界線 */
+            object-fit: cover;
+            border: 4px solid #1a1a1a;
             display: block;
         }
         /* ------------------------- */
@@ -303,7 +301,6 @@
                 flex-direction: column;
             }
             
-            /* スマホ表示での画像調整 */
             .profile-container {
                 width: 140px;
                 height: 140px;
@@ -314,55 +311,54 @@
 <body>
     <div class="container">
         <header>
-            <!-- ここに画像を配置 -->
             <div class="profile-container">
                 <img src="image.jpg" alt="Frederick Douglass" class="profile-image">
             </div>
             
-            <h1>フレデリック・ダグラス「独立記念日」演説</h1>
-            <p class="date">1852年7月5日</p>
+            <h1>Frederick Douglass "The Fourth of July"</h1>
+            <p class="date">July 5, 1852</p>
         </header>
 
         <div class="main-quote">
-            「この7月4日は、あなた方のものであり、私のものではありません」
+            "This Fourth of July is yours, not mine."
         </div>
 
         <!-- Section 1: The Core Contradiction -->
         <section class="section" id="section-1">
-            <h2 class="section-title">演説の核心となる矛盾</h2>
+            <h2 class="section-title">The Core Contradiction</h2>
             
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">⛓️ ⭐</span>
-                        あなた方と私たちの距離
+                        The Distance Between Us
                     </div>
                     <div class="card-content">
-                        <p>あなた方の独立は、私たちとの計り知れない距離を明らかにする</p>
-                        <div class="kpi-value">自由 vs 奴隷</div>
-                        <p>アメリカの独立記念日は、奴隷にされた人々にとって偽善の象徴であり、自由を祝う人々と鎖につながれた人々との間の深い溝を露呈させる。</p>
+                        <p>Your high independence only reveals the immeasurable distance between us.</p>
+                        <div class="kpi-value">Freedom vs. Slavery</div>
+                        <p>To the enslaved, your Independence Day is a symbol of hypocrisy, exposing the deep gulf between those who celebrate freedom and those in chains.</p>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">🔥</span>
-                        必要なのは議論か？
+                        Is Argument Needed?
                     </div>
                     <div class="card-content">
                         <div class="highlight-quote">
-                            説得力のある議論ではなく、<span class="emphasis">焼けるような皮肉</span>が必要である
+                            At a time like this, <span class="emphasis">scorching irony</span>, not convincing argument, is needed.
                         </div>
-                        <p>ダグラスは、奴隷制度の明白な悪に対して冷静な議論は不要であり、激しい非難と皮肉こそが状況にふさわしいと主張する。</p>
+                        <p>Douglass argues that for such a plain wrong as slavery, calm argument is unnecessary; biting ridicule and blasting reproach are fitting.</p>
                     </div>
                 </div>
             </div>
 
             <div class="tone-buttons">
-                <button class="tone-btn" data-tone="irony">Scorching Irony（焼けるような皮肉）</button>
-                <button class="tone-btn" data-tone="reproach">Blasting Reproach（激しい非難）</button>
-                <button class="tone-btn" data-tone="sarcasm">Withering Sarcasm（辛辣な皮肉）</button>
-                <button class="tone-btn" data-tone="rebuke">Stern Rebuke（厳しい叱責）</button>
+                <button class="tone-btn" data-tone="irony">Scorching Irony</button>
+                <button class="tone-btn" data-tone="reproach">Blasting Reproach</button>
+                <button class="tone-btn" data-tone="sarcasm">Withering Sarcasm</button>
+                <button class="tone-btn" data-tone="rebuke">Stern Rebuke</button>
             </div>
 
             <div class="quote-display" id="quote-display"></div>
@@ -370,19 +366,19 @@
 
         <!-- Section 2: The Reality of Slavery -->
         <section class="section" id="section-2">
-            <h2 class="section-title">奴隷制度の現実</h2>
+            <h2 class="section-title">The Reality of Slavery</h2>
             
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">🏭</span>
-                        国内奴隷貿易の現実
+                        Internal Slave Trade
                     </div>
                     <div class="card-content">
-                        <p>奴隷は市場のために<span class="emphasis">「豚のように育てられる」</span></p>
-                        <p style="margin-top: 15px;"><span class="emphasis">「人間の群れ（droves of human stock）」</span>がボルチモアなどの市場へ駆り立てられる</p>
+                        <p>Slaves are reared for the market like <span class="emphasis">"swine"</span></p>
+                        <p style="margin-top: 15px;"><span class="emphasis">"Droves of human stock"</span> are driven to markets like Baltimore.</p>
                         <div class="highlight-quote">
-                            人間が家畜のように売買され、家族が引き裂かれ、人間の尊厳が完全に無視される残虐な現実
+                            A brutal reality where humans are bought and sold like cattle, families torn apart, and human dignity is utterly ignored.
                         </div>
                     </div>
                 </div>
@@ -390,24 +386,24 @@
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">⚖️</span>
-                        逃亡奴隷法による賄賂
+                        Fugitive Slave Law Bribery
                     </div>
                     <div class="card-content">
                         <div class="chart-container">
-                            <p><strong>裁判官の報酬の不平等：</strong></p>
+                            <p><strong>Judge's Fee Inequality:</strong></p>
                             <div class="bar-chart">
                                 <div class="bar" style="height: 100%;">
                                     <div class="bar-value">$10</div>
-                                    <div class="bar-label">奴隷に引き渡す</div>
+                                    <div class="bar-label">Deliver to Slavery</div>
                                 </div>
                                 <div class="bar" style="height: 50%;">
                                     <div class="bar-value">$5</div>
-                                    <div class="bar-label">引き渡さない</div>
+                                    <div class="bar-label">Set Free</div>
                                 </div>
                             </div>
                         </div>
                         <div class="highlight-quote">
-                            <span class="emphasis">「最も汚らわしく悪魔的なすべての人間の法令」</span>
+                            <span class="emphasis">"The most foul and fiendish of all human decrees."</span>
                         </div>
                     </div>
                 </div>
@@ -415,13 +411,13 @@
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">📜</span>
-                        国の法的な位置づけ
+                        National Legal Status
                     </div>
                     <div class="card-content">
-                        <p>逃亡奴隷法により：</p>
-                        <div class="kpi-value">全国制度化</div>
-                        <p>奴隷制度は<span class="emphasis">「もはや単なる州の制度ではなく、合衆国全体の制度となった」</span></p>
-                        <p style="margin-top: 15px;">北部の州も奴隷狩りに加担することを法的に強制され、国全体が奴隷制度の共犯者となった。</p>
+                        <p>By the Fugitive Slave Law:</p>
+                        <div class="kpi-value">Nationalized</div>
+                        <p>Slavery is <span class="emphasis">"no longer a mere state institution, but is one of the whole Union."</span></p>
+                        <p style="margin-top: 15px;">Northern states are legally forced to participate in slave hunting, making the entire nation complicit.</p>
                     </div>
                 </div>
             </div>
@@ -429,31 +425,31 @@
 
         <!-- Section 3: Hypocrisy and the Church -->
         <section class="section" id="section-3">
-            <h2 class="section-title">教会と国民の偽善</h2>
+            <h2 class="section-title">Hypocrisy and the Church</h2>
             
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">⛪</span>
-                        奴隷制度の「防波堤」
+                        "Bulwarks" of Slavery
                     </div>
                     <div class="card-content">
-                        <p>アメリカの教会は<span class="emphasis">「抑圧者の側に立っている」</span></p>
+                        <p>The American church <span class="emphasis">"stands on the side of the oppressor."</span></p>
                         <div class="highlight-quote">
-                            教会は<span class="emphasis">「奴隷制度の防波堤」</span>である
+                            The church is a <span class="emphasis">"bulwark of slavery."</span>
                         </div>
-                        <p style="margin-top: 15px;">教会は奴隷解放の力を持っているにもかかわらず、それを行わない<span class="emphasis">「罪（omission）」</span>がある。宗教的権威が道徳的責任を放棄している。</p>
+                        <p style="margin-top: 15px;">The church has the power to emancipate but fails to do so (a sin of omission). Religious authority has abandoned its moral responsibility.</p>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">❌</span>
-                        偽善の非難
+                        Accusation of Hypocrisy
                     </div>
                     <div class="card-content">
                         <div class="highlight-quote" style="background: rgba(139, 0, 0, 0.5); font-size: 1.1em;">
-                            「あなた方の共和主義は見せかけ、あなた方の人道主義は卑劣な見せかけ、あなた方のキリスト教は嘘という烙印を押しています」
+                            "Your republicanism a sham, your humanity a base pretense, and your Christianity a lie."
                         </div>
                     </div>
                 </div>
@@ -461,15 +457,15 @@
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">🌍</span>
-                        国内と国外の逃亡者
+                        Foreign vs. Domestic Fugitives
                     </div>
                     <div class="card-content">
-                        <p><strong>矛盾する二つの姿勢：</strong></p>
+                        <p><strong>Contradictory Attitudes:</strong></p>
                         <ul class="comparison-list">
-                            <li>✅ <span class="emphasis">国外からの逃亡者</span>：招き入れ、宴会で歓待する</li>
-                            <li>❌ <span class="emphasis">国内からの逃亡者</span>：広告し、狩り立て、逮捕し、撃ち、殺している</li>
+                            <li>✅ <span class="emphasis">Foreign Fugitives</span>: Welcomed and feasted.</li>
+                            <li>❌ <span class="emphasis">Domestic Fugitives</span>: Advertised, hunted, arrested, shot, and killed.</li>
                         </ul>
-                        <p style="margin-top: 15px;">アメリカは海外の抑圧された人々には寛大でありながら、自国の奴隷には残酷である。</p>
+                        <p style="margin-top: 15px;">America is generous to the oppressed abroad but cruel to its own enslaved people.</p>
                     </div>
                 </div>
             </div>
@@ -477,33 +473,33 @@
 
         <!-- Section 4: Conclusion and Hope -->
         <section class="section" id="section-4">
-            <h2 class="section-title">結論と希望</h2>
+            <h2 class="section-title">Conclusion and Hope</h2>
             
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">📜</span>
-                        憲法は「自由の文書」
+                        Constitution as "Liberty Document"
                     </div>
                     <div class="card-content">
-                        <p>憲法が奴隷制を支持しているという見解に対し、ダグラスはそれを<span class="emphasis">「中傷」</span>とする</p>
+                        <p>Douglass calls the view that the Constitution supports slavery a <span class="emphasis">"slander"</span>.</p>
                         <div class="highlight-quote" style="background: rgba(212, 175, 55, 0.2);">
-                            正しく解釈されるならば、憲法は<span class="emphasis" style="font-size: 1.3em;">GLORIOUS LIBERTY DOCUMENT（栄光ある自由の文書）</span>である
+                            Interpreted as it ought to be interpreted, the Constitution is a <span class="emphasis" style="font-size: 1.3em;">GLORIOUS LIBERTY DOCUMENT</span>.
                         </div>
-                        <p style="margin-top: 15px;">ダグラスは憲法を奴隷制廃止の法的根拠として捉え、希望の基盤とする。</p>
+                        <p style="margin-top: 15px;">He views the Constitution as the legal basis for abolition and a foundation for hope.</p>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">🌅</span>
-                        未来への確信
+                        Faith in the Future
                     </div>
                     <div class="card-content">
-                        <p><strong>ダグラスが「この国に対して絶望していない」理由：</strong></p>
+                        <p><strong>Why Douglass "does not despair of this country":</strong></p>
                         <ul class="hope-list">
-                            <li>独立宣言に含まれる偉大な原則</li>
-                            <li>時代の明白な傾向（知識の普及、商業、風、蒸気、稲妻など）</li>
+                            <li>The great principles of the Declaration of Independence.</li>
+                            <li>The obvious tendencies of the age (knowledge, commerce, wind, steam, lightning).</li>
                         </ul>
                     </div>
                 </div>
@@ -511,13 +507,13 @@
                 <div class="card">
                     <div class="card-title">
                         <span class="icon">✊</span>
-                        行動の誓い
+                        Pledge of Action
                     </div>
                     <div class="card-content">
                         <div class="highlight-quote" style="background: rgba(212, 175, 55, 0.2);">
-                            ダグラスは<span class="emphasis">「頭と心と手をもって、奴隷を彼の鎖からの救済という偉大な使命の中で、努力し続ける」</span>と誓う
+                            Douglass pledges to strive with <span class="emphasis">"head, heart, and hand"</span> in the great mission of delivering the slave from his chains.
                         </div>
-                        <p style="margin-top: 15px;">演説は非難だけでなく、具体的な行動への献身で締めくくられる。</p>
+                        <p style="margin-top: 15px;">The speech concludes not just with condemnation, but with a dedication to concrete action.</p>
                     </div>
                 </div>
             </div>
@@ -526,10 +522,10 @@
 
     <script>
         const quotes = {
-            irony: '「この7月4日は、あなた方のものであり、私のものではありません。あなた方の独立の高い喜びは、私たちとの計り知れない距離を明らかにするだけです」— ダグラスは、独立記念日の祝賀が奴隷にとっていかに皮肉に満ちているかを示す。',
-            reproach: '「あなた方の共和主義は見せかけ、あなた方の人道主義は卑劣な見せかけ、あなた方のキリスト教は嘘という烙印を押しています」— アメリカの価値観の偽善に対する激しい非難。',
-            sarcasm: '「あなた方は国外の抑圧からの逃亡者を招き入れ、宴会で歓待しますが、自国からの逃亡者を広告し、狩り立て、逮捕し、撃ち、殺しています」— 矛盾する政策への辛辣な指摘。',
-            rebuke: '「教会は抑圧者の側に立っており、奴隷制度の防波堤となっている」— 宗教機関の道徳的失敗への厳しい叱責。'
+            irony: '"This Fourth of July is yours, not mine. You may rejoice, I must mourn." — Douglass shows the tragic irony of the celebration for the enslaved.',
+            reproach: '"Your republicanism a sham, your humanity a base pretense, and your Christianity a lie." — A fierce condemnation of American hypocrisy.',
+            sarcasm: '"You welcome fugitives from abroad and feast them, but hunt, arrest, shoot, and kill fugitives at home." — A biting point on contradictory policies.',
+            rebuke: '"The church stands on the side of the oppressor and has become a bulwark of slavery." — A stern rebuke of the moral failure of religious institutions.'
         };
 
         const toneButtons = document.querySelectorAll('.tone-btn');
@@ -553,3 +549,4 @@
     </script>
 </body>
 </html>
+
