@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Douglass X Timeline (Interactive)</title>
+    <title>Douglass X - Fully Interactive</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -25,7 +25,7 @@
             color: var(--text-primary);
             display: flex;
             justify-content: center;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: scroll; /* Always show scrollbar to prevent jump */
         }
 
         .layout {
@@ -35,7 +35,7 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* --- Sidebar --- */
         .sidebar {
             width: 275px;
             padding: 20px;
@@ -59,17 +59,10 @@
             align-items: center;
             gap: 20px;
             color: var(--text-primary);
-            text-decoration: none;
         }
 
-        .nav-item:hover {
-            background-color: rgba(212, 175, 55, 0.1);
-            color: var(--accent-color);
-        }
-
-        .nav-item.active {
-            font-weight: 800;
-        }
+        .nav-item:hover { background-color: rgba(212, 175, 55, 0.1); color: var(--accent-color); }
+        .nav-item.active { font-weight: 800; color: var(--accent-color); }
 
         .post-btn {
             background-color: var(--accent-color);
@@ -82,29 +75,31 @@
             margin-top: 15px;
             cursor: pointer;
             width: 90%;
-            transition: transform 0.1s;
+            transition: 0.1s;
         }
+        .post-btn:hover { background-color: var(--accent-hover); }
+        .post-btn:active { transform: scale(0.95); }
 
-        .post-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Main Feed */
-        .feed {
+        /* --- Main Feed Area --- */
+        .main-col {
             width: 600px;
             border-right: 1px solid var(--border-color);
         }
 
-        .feed-header {
+        .header {
             padding: 15px;
             border-bottom: 1px solid var(--border-color);
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 50;
             cursor: pointer;
         }
+
+        /* Views (Pages) */
+        .view { display: none; }
+        .view.active { display: block; }
 
         /* Tweet Styles */
         .tweet {
@@ -115,10 +110,7 @@
             transition: 0.2s;
             cursor: pointer;
         }
-
-        .tweet:hover {
-            background-color: rgba(255, 255, 255, 0.03);
-        }
+        .tweet:hover { background-color: rgba(255, 255, 255, 0.03); }
 
         .avatar {
             width: 48px;
@@ -126,45 +118,25 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--accent-color);
+            flex-shrink: 0;
         }
 
-        .tweet-content {
-            flex: 1;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 5px;
-        }
-
-        .name {
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
-        .handle, .time {
-            color: var(--text-secondary);
-        }
-
-        .verified {
-            color: var(--accent-color);
-        }
-
+        .tweet-content { flex: 1; }
+        .user-info { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+        .name { font-weight: bold; color: var(--text-primary); }
+        .name:hover { text-decoration: underline; }
+        .handle, .time { color: var(--text-secondary); }
+        .verified { color: var(--accent-color); }
+        
         .text {
             font-size: 16px;
             line-height: 1.5;
             white-space: pre-wrap;
             margin-bottom: 15px;
         }
+        .highlight { color: var(--accent-color); font-weight: bold; }
 
-        .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        /* In-tweet Chart/Image */
+        /* Media / Chart */
         .media-container {
             border: 1px solid var(--border-color);
             border-radius: 16px;
@@ -173,553 +145,445 @@
             background: #16181c;
             padding: 15px;
         }
-
-        .bar-chart-row {
-            margin-bottom: 15px;
-        }
-
-        .bar-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .bar-bg {
-            background: #333;
-            height: 24px;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bar-fill {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            font-size: 12px;
-            font-weight: bold;
-            color: black;
-        }
-
+        .bar-chart-row { margin-bottom: 15px; }
+        .bar-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .bar-bg { background: #333; height: 24px; border-radius: 4px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: bold; color: black; }
         .bg-red { background: #f4212e; width: 100%; }
         .bg-gray { background: #eff3f4; width: 50%; }
 
         /* Actions */
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            max-width: 425px;
-            color: var(--text-secondary);
-            margin-top: 10px;
-        }
-
-        .action-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            transition: 0.2s;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-        }
-
-        .action-container {
-            display: flex;
-            align-items: center;
-            group-hover: text-decoration: none;
-        }
+        .actions { display: flex; justify-content: space-between; max-width: 425px; color: var(--text-secondary); margin-top: 10px; }
+        .action-container { display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .action-icon { padding: 8px; border-radius: 50%; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         
-        /* Interaction States */
-        .action-container:hover .action-item.reply { background: rgba(29, 155, 240, 0.1); color: #1d9bf0; }
-        .action-container:hover .count.reply { color: #1d9bf0; }
-
-        .action-container:hover .action-item.retweet { background: rgba(0, 186, 124, 0.1); color: var(--retweet-color); }
-        .action-container:hover .count.retweet { color: var(--retweet-color); }
-
-        .action-container:hover .action-item.like { background: rgba(249, 24, 128, 0.1); color: var(--like-color); }
-        .action-container:hover .count.like { color: var(--like-color); }
-
-        /* Active Interaction States (Clicked) */
-        .liked .action-item.like { color: var(--like-color); }
-        .liked .count.like { color: var(--like-color); }
+        .action-container:hover.reply { color: #1d9bf0; }
+        .action-container:hover.reply .action-icon { background: rgba(29, 155, 240, 0.1); }
         
-        .retweeted .action-item.retweet { color: var(--retweet-color); }
-        .retweeted .count.retweet { color: var(--retweet-color); }
-
-        /* Right Sidebar */
-        .right-sidebar {
-            width: 350px;
-            padding: 20px 30px;
-        }
-
-        .search {
-            background: #202327;
-            padding: 12px 20px;
-            border-radius: 30px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search input {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 15px;
-            outline: none;
-            width: 100%;
-        }
-
-        .trend-box {
-            background: #16181c;
-            border-radius: 16px;
-            padding: 15px;
-        }
-
-        .trend-item {
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        .action-container:hover.retweet { color: var(--retweet-color); }
+        .action-container:hover.retweet .action-icon { background: rgba(0, 186, 124, 0.1); }
         
-        .trend-item:hover {
-            background-color: rgba(255,255,255,0.03);
-        }
+        .action-container:hover.like { color: var(--like-color); }
+        .action-container:hover.like .action-icon { background: rgba(249, 24, 128, 0.1); }
 
+        .liked { color: var(--like-color); }
+        .liked .action-icon .fa-heart { font-weight: 900; } /* Solid heart */
+        .retweeted { color: var(--retweet-color); }
+
+        /* --- Profile Page Specifics --- */
+        .profile-banner { height: 200px; background: linear-gradient(135deg, #2d1810, #8b4513); }
+        .profile-details { padding: 15px; position: relative; }
+        .profile-avatar-lg {
+            width: 134px; height: 134px; border-radius: 50%; border: 4px solid black;
+            position: absolute; top: -67px; left: 15px; background: black;
+        }
+        .edit-profile { float: right; border: 1px solid var(--border-color); background: transparent; color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .profile-name-lg { font-size: 24px; font-weight: 800; margin-top: 70px; display: flex; align-items: center; gap: 5px; }
+        .profile-bio { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--text-primary); }
+        .profile-meta { margin-top: 10px; color: var(--text-secondary); font-size: 15px; display: flex; gap: 15px; }
+        .follow-counts { margin-top: 15px; display: flex; gap: 20px; font-size: 14px; }
+        .follow-counts span { color: var(--text-primary); font-weight: bold; }
+        .profile-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-top: 15px; }
+        .tab { flex: 1; text-align: center; padding: 15px; cursor: pointer; color: var(--text-secondary); transition: 0.2s; }
+        .tab:hover { background: rgba(255,255,255,0.03); }
+        .tab.active { color: var(--text-primary); font-weight: bold; border-bottom: 4px solid var(--accent-color); }
+
+        /* --- Notification Item --- */
+        .notification-item { padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .notif-icon { width: 30px; text-align: right; font-size: 24px; }
+
+        /* --- Right Sidebar --- */
+        .right-sidebar { width: 350px; padding: 20px 30px; }
+        .search-container { position: sticky; top: 10px; background: black; padding-bottom: 10px; z-index: 10; }
+        .search-bar { background: #202327; padding: 12px 20px; border-radius: 30px; display: flex; align-items: center; gap: 10px; color: var(--text-secondary); }
+        .search-bar:focus-within { border: 1px solid var(--accent-color); color: var(--accent-color); background: black; }
+        .search-bar input { background: transparent; border: none; color: white; font-size: 15px; outline: none; width: 100%; }
+        .trend-box { background: #16181c; border-radius: 16px; padding: 15px; margin-top: 15px; }
+        .trend-item { margin-bottom: 20px; cursor: pointer; }
+        .trend-item:hover { background: rgba(255,255,255,0.03); }
         .trend-cat { font-size: 13px; color: var(--text-secondary); }
         .trend-name { font-weight: bold; margin: 2px 0; }
         .trend-count { font-size: 13px; color: var(--text-secondary); }
 
-        /* Quote Tweet Style */
-        .quote-tweet {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .quote-tweet:hover { background-color: rgba(255,255,255,0.03); }
-        .quote-user { display: flex; gap: 5px; align-items: center; font-size: 14px; margin-bottom: 5px; }
-
-        /* Modal */
+        /* --- Modal --- */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-bg);
-            display: none;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 50px;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg);
+            display: none; justify-content: center; align-items: flex-start; padding-top: 50px; z-index: 1000;
         }
+        .modal-content { background: black; width: 600px; border-radius: 16px; padding: 15px; max-width: 90%; box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .close-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+        .modal-textarea { width: 100%; background: transparent; border: none; color: white; font-size: 20px; font-family: inherit; outline: none; resize: none; min-height: 120px; margin-top: 10px; }
 
-        .modal-content {
-            background: black;
-            width: 600px;
-            border-radius: 16px;
-            padding: 15px;
-            max-width: 90%;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .modal-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 20px;
-            font-family: inherit;
-            outline: none;
-            resize: none;
-            min-height: 150px;
-        }
-
-        @media (max-width: 1000px) {
-            .right-sidebar { display: none; }
-        }
+        @media (max-width: 1000px) { .right-sidebar { display: none; } }
     </style>
 </head>
 <body>
 
 <div class="layout">
-    <!-- Left Navigation -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <div class="nav-item" style="font-size: 30px;"><i class="fas fa-bolt" style="color: var(--accent-color);"></i></div>
-        <div class="nav-item active" onclick="setActive(this); scrollToTop();"><i class="fas fa-home"></i> Home</div>
-        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-search"></i> Explore</div>
-        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-bell"></i> Notifications <span style="background: var(--accent-color); color:black; font-size:12px; padding:2px 6px; border-radius:50%;">20+</span></div>
-        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-envelope"></i> Messages</div>
-        <div class="nav-item" onclick="setActive(this)"><i class="far fa-user"></i> Profile</div>
-        <button class="post-btn" onclick="openModal()">Post</button>
+        <div class="nav-item active" onclick="switchView('home', this)"><i class="fas fa-home"></i> Home</div>
+        <div class="nav-item" onclick="switchView('explore', this)"><i class="fas fa-search"></i> Explore</div>
+        <div class="nav-item" onclick="switchView('notifications', this)"><i class="fas fa-bell"></i> Notifications</div>
+        <div class="nav-item" onclick="switchView('messages', this)"><i class="fas fa-envelope"></i> Messages</div>
+        <div class="nav-item" onclick="switchView('profile', this)"><i class="far fa-user"></i> Profile</div>
+        <button class="post-btn" onclick="openModal()">Agitate</button>
     </div>
 
-    <!-- Main Feed -->
-    <div class="feed">
-        <div class="feed-header" onclick="scrollToTop()">
-            <h3>Home</h3>
+    <!-- Main Content Area -->
+    <div class="main-col">
+        
+        <!-- HOME VIEW -->
+        <div id="home" class="view active">
+            <div class="header" onclick="window.scrollTo(0,0)">
+                <h3>Home</h3>
+            </div>
+            <!-- Tweets will be injected here by JS -->
+            <div id="home-feed"></div>
         </div>
 
-        <!-- TWEET 1 -->
-        <div class="tweet">
-            <div style="position: absolute; top: 12px; left: 45px; font-size: 10px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px;">
-                <i class="fas fa-thumbtack"></i> Pinned
+        <!-- EXPLORE VIEW -->
+        <div id="explore" class="view">
+            <div class="header">
+                <div class="search-bar" style="background: #16181c;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search X">
+                </div>
             </div>
-            <img src="image.jpg" class="avatar" style="margin-top: 15px;">
-            <div class="tweet-content" style="margin-top: 15px;">
-                <div class="user-info">
-                    <span class="name">Frederick Douglass</span>
-                    <i class="fas fa-certificate verified"></i>
-                    <span class="handle">@RealDouglass · 1h</span>
-                </div>
-                <div class="text">My timeline is flooded with red, white, and blue. 🎉🇺🇸
-
-But let me be clear: This Fourth of July is <span class="highlight">YOURS, not MINE.</span> 
-
-Your high independence only reveals the immeasurable distance between us. To ask me to join your joyous anthems while my people bleed in chains is not just insensitive—it is inhuman mockery. 
-
-#July4th #Hypocrisy #NotMyHoliday</div>
-                
-                <div class="quote-tweet">
-                    <div class="quote-user">
-                        <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" style="width:20px; height:20px; border-radius:50%;">
-                        <span style="font-weight:bold;">White House 🇺🇸</span> <span style="color:#71767b;">@WhiteHouse · 2h</span>
-                    </div>
-                    <div>Celebrating freedom, liberty, and justice for all today! 🎇</div>
-                </div>
-
-                <div class="actions">
-                    <div class="action-container" onclick="toggleAction(this, 'reply')">
-                        <button class="action-item reply"><i class="far fa-comment"></i></button>
-                        <span class="count reply">1.5K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
-                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
-                        <span class="count retweet">12K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'like')">
-                        <button class="action-item like"><i class="far fa-heart"></i></button>
-                        <span class="count like">45K</span>
-                    </div>
-                    <div class="action-container">
-                        <button class="action-item"><i class="far fa-chart-bar"></i></button>
-                        <span class="count">2.1M</span>
-                    </div>
-                </div>
+            <div class="trend-box" style="margin: 0; border-radius: 0; background: transparent;">
+                <h3 style="margin-bottom: 20px;">Trends for you</h3>
+                <!-- Trends items repeated for effect -->
+                <div class="trend-item"><div class="trend-cat">Politics · Trending</div><div class="trend-name">#WhatToTheSlave</div><div class="trend-count">1.2M posts</div></div>
+                <div class="trend-item"><div class="trend-cat">US News · Trending</div><div class="trend-name">Fugitive Slave Law</div><div class="trend-count">500K posts</div></div>
+                <div class="trend-item"><div class="trend-cat">Technology · Trending</div><div class="trend-name">Steam & Lightning</div><div class="trend-count">The age of progress</div></div>
             </div>
         </div>
 
-        <!-- TWEET 2 -->
-        <div class="tweet">
-            <img src="image.jpg" class="avatar">
-            <div class="tweet-content">
-                <div class="user-info">
-                    <span class="name">Frederick Douglass</span>
-                    <i class="fas fa-certificate verified"></i>
-                    <span class="handle">@RealDouglass · 3h</span>
+        <!-- NOTIFICATIONS VIEW -->
+        <div id="notifications" class="view">
+            <div class="header"><h3>Notifications</h3></div>
+            <div class="notification-item">
+                <div class="notif-icon" style="color: #1d9bf0;"><i class="fas fa-user"></i></div>
+                <div>
+                    <img src="https://ui-avatars.com/api/?name=AL&background=random" class="avatar" style="width:30px;height:30px;">
+                    <p><span style="font-weight:bold">Abraham Lincoln</span> followed you</p>
                 </div>
-                <div class="text">Stop telling me to "debate" you in the marketplace of ideas. 🛑
-
-The time for argument is over. Is a man not a man? Must I prove that? That is conceded. 
-
-What we need now is not light, but <span class="highlight">FIRE</span>. 🔥
-Not a gentle shower, but the THUNDER. ⛈️
-Not convincing argument, but <span class="highlight">SCORCHING IRONY</span>.
-
-I am not here to persuade you. I am here to denounce you.</div>
-                <div class="actions">
-                    <div class="action-container" onclick="toggleAction(this, 'reply')">
-                        <button class="action-item reply"><i class="far fa-comment"></i></button>
-                        <span class="count reply">420</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
-                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
-                        <span class="count retweet">5.6K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'like')">
-                        <button class="action-item like"><i class="far fa-heart"></i></button>
-                        <span class="count like">18K</span>
-                    </div>
-                    <div class="action-container">
-                        <button class="action-item"><i class="far fa-chart-bar"></i></button>
-                        <span class="count">890K</span>
-                    </div>
+            </div>
+            <div class="notification-item">
+                <div class="notif-icon" style="color: var(--like-color);"><i class="fas fa-heart"></i></div>
+                <div>
+                    <img src="https://ui-avatars.com/api/?name=HG&background=random" class="avatar" style="width:30px;height:30px;">
+                    <p><span style="font-weight:bold">Horace Greeley</span> liked your reply</p>
+                    <p style="color:var(--text-secondary);">"At a time like this, scorching irony, not convincing argument..."</p>
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notif-icon" style="color: var(--retweet-color);"><i class="fas fa-retweet"></i></div>
+                <div>
+                    <img src="https://ui-avatars.com/api/?name=HBS&background=random" class="avatar" style="width:30px;height:30px;">
+                    <p><span style="font-weight:bold">Harriet Beecher Stowe</span> reposted your post</p>
                 </div>
             </div>
         </div>
 
-        <!-- TWEET 3 -->
-        <div class="tweet">
-            <img src="image.jpg" class="avatar">
-            <div class="tweet-content">
-                <div class="user-info">
-                    <span class="name">Frederick Douglass</span>
-                    <i class="fas fa-certificate verified"></i>
-                    <span class="handle">@RealDouglass · 5h</span>
-                </div>
-                <div class="text">You call this a "Justice System"? Let's look at the incentives under the Fugitive Slave Law. 📉
-
-They have literally put a price tag on corruption. <span class="highlight">Open and palpable bribes.</span></div>
-
-                <div class="media-container">
-                    <div style="font-weight:bold; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">JUDGE'S FEE STRUCTURE ⚖️💰</div>
-                    
-                    <div class="bar-chart-row">
-                        <div class="bar-label">
-                            <span>Deliver to Slavery (Guilty)</span>
-                            <span style="color:#f4212e; font-weight:bold;">$10.00</span>
-                        </div>
-                        <div class="bar-bg">
-                            <div class="bar-fill bg-red">BRIBE ACCEPTED</div>
-                        </div>
-                    </div>
-
-                    <div class="bar-chart-row">
-                        <div class="bar-label">
-                            <span>Set Free (Innocent)</span>
-                            <span>$5.00</span>
-                        </div>
-                        <div class="bar-bg">
-                            <div class="bar-fill bg-gray">Half Price</div>
-                        </div>
-                    </div>
-                    <div style="font-size:12px; color:#71767b; margin-top:10px;">Source: The Fugitive Slave Act of 1850</div>
-                </div>
-
-                <div class="text" style="margin-top: 10px; font-size: 15px;">
-                    This Law makes every American a slave-hunter. If you are silent, you are complicit.
-                </div>
-
-                <div class="actions">
-                    <div class="action-container" onclick="toggleAction(this, 'reply')">
-                        <button class="action-item reply"><i class="far fa-comment"></i></button>
-                        <span class="count reply">892</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
-                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
-                        <span class="count retweet">9.1K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'like')">
-                        <button class="action-item like"><i class="far fa-heart"></i></button>
-                        <span class="count like">22K</span>
-                    </div>
-                </div>
+        <!-- MESSAGES VIEW -->
+        <div id="messages" class="view">
+            <div class="header"><h3>Messages</h3></div>
+            <div style="padding: 40px 20px; text-align: center;">
+                <h2>Welcome to your inbox!</h2>
+                <p style="color: var(--text-secondary);">Drop a line, share a post, and more with private conversations.</p>
+                <button class="post-btn" style="width: auto; padding: 10px 20px;">Write a message</button>
             </div>
         </div>
 
-        <!-- TWEET 4 -->
-        <div class="tweet">
-            <img src="image.jpg" class="avatar">
-            <div class="tweet-content">
-                <div class="user-info">
-                    <span class="name">Frederick Douglass</span>
-                    <i class="fas fa-certificate verified"></i>
-                    <span class="handle">@RealDouglass · 6h</span>
-                </div>
-                <div class="text">To the religious leaders in my DMs saying "Pray for peace": 
-
-Your Christianity is a <span class="highlight">LIE</span>. 
-You are the "bulwark" of slavery. ⛪🧱
-
-How can you sing praises to God while men and women are reared for the market like <span class="highlight">SWINE</span> 🐖? Your prayers are empty. Your hymns are a sham. 
-
-I welcome the infidelity that strikes down your slave-holding religion.</div>
-                <div class="actions">
-                    <div class="action-container" onclick="toggleAction(this, 'reply')">
-                        <button class="action-item reply"><i class="far fa-comment"></i></button>
-                        <span class="count reply">3.2K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
-                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
-                        <span class="count retweet">15K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'like')">
-                        <button class="action-item like"><i class="far fa-heart"></i></button>
-                        <span class="count like">60K</span>
-                    </div>
+        <!-- PROFILE VIEW -->
+        <div id="profile" class="view">
+            <div class="header" style="display:flex; gap:20px; align-items:center;">
+                <i class="fas fa-arrow-left" onclick="switchView('home', document.querySelector('.nav-item'))"></i>
+                <div>
+                    <h3 style="margin:0">Frederick Douglass</h3>
+                    <p style="margin:0; font-size:13px; color:var(--text-secondary);">2,852 posts</p>
                 </div>
             </div>
-        </div>
-
-        <!-- TWEET 5 -->
-        <div class="tweet">
-            <img src="image.jpg" class="avatar">
-            <div class="tweet-content">
-                <div class="user-info">
-                    <span class="name">Frederick Douglass</span>
-                    <i class="fas fa-certificate verified"></i>
-                    <span class="handle">@RealDouglass · 8h</span>
+            <div class="profile-banner"></div>
+            <div class="profile-details">
+                <img src="image.jpg" class="profile-avatar-lg">
+                <button class="edit-profile">Edit profile</button>
+                <div class="profile-name-lg">Frederick Douglass <i class="fas fa-certificate verified"></i></div>
+                <div style="color:var(--text-secondary);">@RealDouglass</div>
+                <div class="profile-bio">
+                    Former Slave. Abolitionist. Orator. Writer. <br>
+                    "Power concedes nothing without a demand. It never did and it never will."
                 </div>
-                <div class="text">Despite the dark picture I have painted today, I do NOT despair of this country. 🌅
-
-I will not let them steal the Constitution from us. Read it. Interpreted as it ought to be, it is a <span class="highlight">GLORIOUS LIBERTY DOCUMENT</span>. 📜✨
-
-The doom of slavery is certain. The tendencies of the age—wind, steam, lightning—are on our side. 
-
-I will work with my head, heart, and hand until every chain is broken. ✊🏾</div>
-                <div class="actions">
-                    <div class="action-container" onclick="toggleAction(this, 'reply')">
-                        <button class="action-item reply"><i class="far fa-comment"></i></button>
-                        <span class="count reply">550</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
-                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
-                        <span class="count retweet">4.2K</span>
-                    </div>
-                    <div class="action-container" onclick="toggleAction(this, 'like')">
-                        <button class="action-item like"><i class="far fa-heart"></i></button>
-                        <span class="count like">25K</span>
-                    </div>
+                <div class="profile-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Rochester, NY</span>
+                    <span><i class="fas fa-link"></i> northstar.paper</span>
+                    <span><i class="fas fa-calendar-alt"></i> Joined July 1818</span>
+                </div>
+                <div class="follow-counts">
+                    <span>256 <span style="font-weight:normal; color:var(--text-secondary);">Following</span></span>
+                    <span>1.4M <span style="font-weight:normal; color:var(--text-secondary);">Followers</span></span>
                 </div>
             </div>
+            <div class="profile-tabs">
+                <div class="tab active">Posts</div>
+                <div class="tab">Replies</div>
+                <div class="tab">Highlights</div>
+                <div class="tab">Media</div>
+            </div>
+            <!-- Profile tweets feed -->
+            <div id="profile-feed"></div>
         </div>
 
     </div>
 
     <!-- Right Sidebar -->
     <div class="right-sidebar">
-        <div class="search">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search">
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
         </div>
-
         <div class="trend-box">
             <h3 style="margin-top: 0; margin-bottom: 15px;">Trends for you</h3>
-            
-            <div class="trend-item">
-                <div class="trend-cat">Politics · Trending</div>
-                <div class="trend-name">#WhatToTheSlave</div>
-                <div class="trend-count">125K posts</div>
-            </div>
-
-            <div class="trend-item">
-                <div class="trend-cat">US News · Trending</div>
-                <div class="trend-name">Fugitive Slave Law</div>
-                <div class="trend-count">The Law is a Crime</div>
-            </div>
-
-            <div class="trend-item">
-                <div class="trend-cat">Trending in Rochester</div>
-                <div class="trend-name">The North Star</div>
-                <div class="trend-count">New Issue Out</div>
-            </div>
-
-            <div class="trend-item">
-                <div class="trend-cat">Religion · Trending</div>
-                <div class="trend-name">American Church</div>
-                <div class="trend-count">Exposed</div>
+            <div class="trend-item"><div class="trend-cat">Politics · Trending</div><div class="trend-name">#July4th</div><div class="trend-count">2.5M posts</div></div>
+            <div class="trend-item"><div class="trend-cat">US News · Trending</div><div class="trend-name">Civil War</div><div class="trend-count">Potentially inevitable</div></div>
+            <div class="trend-item"><div class="trend-cat">Music · Trending</div><div class="trend-name">Go Down Moses</div><div class="trend-count">12K posts</div></div>
+        </div>
+        <div class="trend-box">
+            <h3 style="margin-top: 0; margin-bottom: 15px;">Who to follow</h3>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
+                <div style="display:flex; gap:10px;">
+                    <img src="https://ui-avatars.com/api/?name=AL&background=0000ff&color=fff" style="width:40px;height:40px;border-radius:50%;">
+                    <div><div style="font-weight:bold; font-size:14px;">A. Lincoln</div><div style="color:gray; font-size:13px;">@HonestAbe</div></div>
+                </div>
+                <button style="background:white; color:black; border:none; padding:5px 15px; border-radius:20px; font-weight:bold; cursor:pointer;">Follow</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal for New Post -->
+<!-- POST MODAL -->
 <div class="modal-overlay" id="postModal" onclick="if(event.target === this) closeModal()">
     <div class="modal-content">
         <div class="modal-header">
             <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
-            <button class="post-btn" style="width: auto; padding: 8px 20px; margin: 0; font-size: 15px;" onclick="closeModal()">Post</button>
+            <button class="post-btn" style="width: auto; padding: 8px 20px; margin: 0; font-size: 15px;" onclick="submitPost()">Post</button>
         </div>
         <div style="display: flex; gap: 15px;">
             <img src="image.jpg" class="avatar">
-            <textarea class="modal-input" placeholder="What is happening?!"></textarea>
+            <textarea class="modal-textarea" id="postInput" placeholder="What is happening?!"></textarea>
         </div>
-        <div style="margin-top: 20px; color: var(--accent-color); font-size: 20px;">
-            <i class="far fa-image" style="margin-right: 15px; cursor: pointer;"></i>
-            <i class="fas fa-poll" style="margin-right: 15px; cursor: pointer;"></i>
-            <i class="far fa-smile" style="cursor: pointer;"></i>
+        <div style="margin-top: 20px; color: var(--accent-color); font-size: 20px; border-top: 1px solid #333; padding-top: 15px;">
+            <i class="far fa-image" style="margin-right: 20px; cursor: pointer;"></i>
+            <i class="fas fa-poll" style="margin-right: 20px; cursor: pointer;"></i>
+            <i class="far fa-smile" style="margin-right: 20px; cursor: pointer;"></i>
+            <i class="far fa-calendar-alt" style="cursor: pointer;"></i>
         </div>
     </div>
 </div>
 
 <script>
-    // Navigation handling
-    function setActive(element) {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        element.classList.add('active');
+    // --- DATA: Initial Tweets (Now expanded to 10) ---
+    const initialTweets = [
+        {
+            pinned: true,
+            text: `My timeline is flooded with red, white, and blue. 🎉🇺🇸\n\nBut let me be clear: This Fourth of July is <span class="highlight">YOURS, not MINE.</span>\n\nYour high independence only reveals the immeasurable distance between us. To ask me to join your joyous anthems while my people bleed in chains is not just insensitive—it is inhuman mockery.\n\n#July4th #Hypocrisy #NotMyHoliday`,
+            quote: { user: 'White House 🇺🇸', handle: '@WhiteHouse', text: 'Celebrating freedom, liberty, and justice for all today! 🎇' },
+            replies: '1.5K', retweets: '12K', likes: '45K', views: '2.1M'
+        },
+        {
+            text: `Stop telling me to "debate" you in the marketplace of ideas. 🛑\n\nThe time for argument is over. Is a man not a man? Must I prove that? That is conceded.\n\nWhat we need now is not light, but <span class="highlight">FIRE</span>. 🔥\nNot a gentle shower, but the THUNDER. ⛈️\nNot convincing argument, but <span class="highlight">SCORCHING IRONY</span>.\n\nI am not here to persuade you. I am here to denounce you.`,
+            replies: '420', retweets: '5.6K', likes: '18K', views: '890K'
+        },
+        {
+            text: `You call this a "Justice System"? Let's look at the incentives under the Fugitive Slave Law. 📉\n\nThey have literally put a price tag on corruption. <span class="highlight">Open and palpable bribes.</span>`,
+            chart: true,
+            replies: '892', retweets: '9.1K', likes: '22K', views: '1.2M'
+        },
+        {
+            text: `To the religious leaders in my DMs saying "Pray for peace":\n\nYour Christianity is a <span class="highlight">LIE</span>. You are the "bulwark" of slavery. ⛪🧱\n\nHow can you sing praises to God while men and women are reared for the market like <span class="highlight">SWINE</span> 🐖? Your prayers are empty. Your hymns are a sham.\n\nI welcome the infidelity that strikes down your slave-holding religion.`,
+            replies: '3.2K', retweets: '15K', likes: '60K', views: '3.5M'
+        },
+        {
+            text: `Some of you are saying "It takes time." You counsel "Gradualism."\n\nI say: If there is no struggle, there is no progress. Those who profess to favor freedom, and yet depreciate agitation, are men who want crops without plowing up the ground. They want rain without thunder and lightning. ⚡\n\nWe want it NOW.`,
+            replies: '800', retweets: '6.7K', likes: '31K', views: '1.1M'
+        },
+        {
+            text: `Knowledge makes a man unfit to be a slave.\n\nThat is why they ban books. That is why they fear truth. \n\nEducate yourself. Organize. Agitate. 📚✊🏾`,
+            replies: '200', retweets: '8K', likes: '50K', views: '900K'
+        },
+        {
+            text: `Power concedes nothing without a demand. It never did and it never will. \n\nFind out just what any people will quietly submit to and you have found out the exact measure of injustice and wrong which will be imposed upon them.`,
+            replies: '1.1K', retweets: '20K', likes: '85K', views: '4.2M'
+        },
+        {
+            text: `Watching the news today... American hypocrisy knows no bounds. \n\nYou boast of your love of liberty, your superior civilization, and your pure Christianity, while the whole political power of the nation is solemnly pledged to support and perpetuate the enslavement of three millions of your countrymen. \n\nMake it make sense. 🤡🌎`,
+            replies: '5K', retweets: '18K', likes: '72K', views: '5M'
+        },
+        {
+            text: `Despite the dark picture I have painted today, I do NOT despair of this country. 🌅\n\nI will not let them steal the Constitution from us. Read it. Interpreted as it ought to be, it is a <span class="highlight">GLORIOUS LIBERTY DOCUMENT</span>. 📜✨\n\nThe doom of slavery is certain. The tendencies of the age—wind, steam, lightning—are on our side.`,
+            replies: '550', retweets: '4.2K', likes: '25K', views: '800K'
+        },
+        {
+            text: `I will work with my head, heart, and hand until every chain is broken. Who is with me? 👇`,
+            replies: '2.5K', retweets: '3.1K', likes: '12K', views: '600K'
+        }
+    ];
+
+    // --- RENDER FUNCTIONS ---
+    function createTweetHTML(t) {
+        let pinnedHTML = t.pinned ? `<div style="position: absolute; top: 10px; left: 45px; font-size: 10px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px;"><i class="fas fa-thumbtack"></i> Pinned</div>` : '';
+        let marginTop = t.pinned ? '20px' : '0';
+        
+        let mediaHTML = '';
+        if (t.quote) {
+            mediaHTML = `
+            <div style="border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-top: 10px; cursor: pointer;">
+                <div style="display: flex; gap: 5px; align-items: center; font-size: 14px; margin-bottom: 5px;">
+                    <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" style="width:20px; height:20px; border-radius:50%;">
+                    <span style="font-weight:bold;">${t.quote.user}</span> <span style="color:#71767b;">${t.quote.handle} · 2h</span>
+                </div>
+                <div>${t.quote.text}</div>
+            </div>`;
+        }
+        if (t.chart) {
+            mediaHTML = `
+            <div class="media-container">
+                <div style="font-weight:bold; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">JUDGE'S FEE STRUCTURE ⚖️💰</div>
+                <div class="bar-chart-row">
+                    <div class="bar-label"><span>Deliver to Slavery (Guilty)</span><span style="color:#f4212e; font-weight:bold;">$10.00</span></div>
+                    <div class="bar-bg"><div class="bar-fill bg-red">BRIBE ACCEPTED</div></div>
+                </div>
+                <div class="bar-chart-row">
+                    <div class="bar-label"><span>Set Free (Innocent)</span><span>$5.00</span></div>
+                    <div class="bar-bg"><div class="bar-fill bg-gray">Half Price</div></div>
+                </div>
+                <div style="font-size:12px; color:#71767b; margin-top:10px;">Source: The Fugitive Slave Act of 1850</div>
+            </div>`;
+        }
+
+        return `
+        <div class="tweet" onclick="alert('Viewing Tweet Details...')">
+            ${pinnedHTML}
+            <img src="image.jpg" class="avatar" style="margin-top: ${marginTop};">
+            <div class="tweet-content" style="margin-top: ${marginTop};">
+                <div class="user-info">
+                    <span class="name">Frederick Douglass</span>
+                    <i class="fas fa-certificate verified"></i>
+                    <span class="handle">@RealDouglass · 1h</span>
+                </div>
+                <div class="text">${t.text}</div>
+                ${mediaHTML}
+                <div class="actions">
+                    <div class="action-container reply" onclick="event.stopPropagation(); alert('Reply clicked')">
+                        <div class="action-icon"><i class="far fa-comment"></i></div>
+                        <span>${t.replies}</span>
+                    </div>
+                    <div class="action-container retweet" onclick="toggleStat(this, 'retweet')">
+                        <div class="action-icon"><i class="fas fa-retweet"></i></div>
+                        <span class="count">${t.retweets}</span>
+                    </div>
+                    <div class="action-container like" onclick="toggleStat(this, 'like')">
+                        <div class="action-icon"><i class="far fa-heart"></i></div>
+                        <span class="count">${t.likes}</span>
+                    </div>
+                    <div class="action-container" style="cursor:default;">
+                        <div class="action-icon"><i class="far fa-chart-bar"></i></div>
+                        <span>${t.views || '1K'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
     }
 
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    function renderFeed(elementId, tweets) {
+        const feed = document.getElementById(elementId);
+        feed.innerHTML = tweets.map(t => createTweetHTML(t)).join('');
     }
 
-    // Modal handling
-    function openModal() {
-        document.getElementById('postModal').style.display = 'flex';
+    // --- INTERACTIVITY ---
+    
+    // Switch Views
+    function switchView(viewId, navEl) {
+        // Update Nav
+        if(navEl) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            navEl.classList.add('active');
+        }
+        // Update View
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        
+        window.scrollTo(0,0);
     }
 
-    function closeModal() {
-        document.getElementById('postModal').style.display = 'none';
+    // Modal
+    function openModal() { document.getElementById('postModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('postModal').style.display = 'none'; }
+
+    // Create New Post
+    function submitPost() {
+        const text = document.getElementById('postInput').value;
+        if (!text) return;
+
+        const newTweet = {
+            text: text,
+            replies: '0', retweets: '0', likes: '0', views: '1'
+        };
+
+        // Add to DOM immediately
+        const html = createTweetHTML(newTweet);
+        const homeFeed = document.getElementById('home-feed');
+        const profileFeed = document.getElementById('profile-feed');
+        
+        // Insert after header
+        homeFeed.insertAdjacentHTML('afterbegin', html);
+        profileFeed.insertAdjacentHTML('afterbegin', html);
+
+        document.getElementById('postInput').value = '';
+        closeModal();
     }
 
-    // Interaction handling (Like, Retweet, Reply)
-    function toggleAction(element, type) {
-        // Prevent bubbling to the tweet click event
+    // Toggle Likes/Retweets with Number Logic
+    function toggleStat(element, type) {
         event.stopPropagation();
         
-        let isActive = false;
-        
+        let isActive;
         if (type === 'like') {
             isActive = element.classList.toggle('liked');
             const icon = element.querySelector('i');
-            if (isActive) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-            }
-        } else if (type === 'retweet') {
-            isActive = element.classList.toggle('retweeted');
+            icon.className = isActive ? 'fas fa-heart' : 'far fa-heart';
         } else {
-            // Just animation for reply
-            element.style.transform = "scale(0.9)";
-            setTimeout(() => element.style.transform = "scale(1)", 100);
-            return; 
+            isActive = element.classList.toggle('retweeted');
         }
 
-        // Update number
+        // Logic to parse "12K" -> 12000 -> 12001 -> "12K" (simplified)
         const countSpan = element.querySelector('.count');
-        let countText = countSpan.innerText;
-        let count = parseFloat(countText);
-        let suffix = countText.replace(/[\d\.]/g, '');
+        let currentText = countSpan.innerText;
         
-        // Simple logic for K/M handling (approximate for demo)
-        if (isActive) {
-            // Fake increment
-             // Just for visual feedback, we won't do complex math on '2.1M'
-             // but if it's '45K', we can pretend to bump it.
-             element.style.transform = "scale(1.2)";
-             setTimeout(() => element.style.transform = "scale(1)", 200);
+        // Simple visual feedback only for demo (handling K/M logic is complex string parsing)
+        // We will just append a "+" or remove it to show it worked, or increment if integer.
+        if (!currentText.includes('K') && !currentText.includes('M')) {
+            let num = parseInt(currentText.replace(/,/g, ''));
+            num = isActive ? num + 1 : num - 1;
+            countSpan.innerText = num;
+        } else {
+            // For K/M, just visual effect (color change handled by CSS)
         }
     }
+
+    // --- INITIALIZATION ---
+    window.onload = function() {
+        renderFeed('home-feed', initialTweets);
+        renderFeed('profile-feed', initialTweets); // Duplicate for profile demo
+    };
+
 </script>
 
 </body>
 </html>
-
 
