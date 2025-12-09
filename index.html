@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Douglass X Timeline</title>
+    <title>Douglass X Timeline (Interactive)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -15,6 +15,7 @@
             --accent-hover: #b3922d;
             --like-color: #f91880;
             --retweet-color: #00ba7c;
+            --modal-bg: rgba(91, 112, 131, 0.4);
         }
 
         body {
@@ -24,13 +25,14 @@
             color: var(--text-primary);
             display: flex;
             justify-content: center;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         .layout {
             display: flex;
             width: 100%;
             max-width: 1265px;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         /* Sidebar */
@@ -56,11 +58,17 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
         .nav-item:hover {
             background-color: rgba(212, 175, 55, 0.1);
             color: var(--accent-color);
+        }
+
+        .nav-item.active {
+            font-weight: 800;
         }
 
         .post-btn {
@@ -74,13 +82,17 @@
             margin-top: 15px;
             cursor: pointer;
             width: 90%;
+            transition: transform 0.1s;
+        }
+
+        .post-btn:active {
+            transform: scale(0.95);
         }
 
         /* Main Feed */
         .feed {
             width: 600px;
             border-right: 1px solid var(--border-color);
-            overflow-y: auto;
         }
 
         .feed-header {
@@ -91,6 +103,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            cursor: pointer;
         }
 
         /* Tweet Styles */
@@ -209,11 +222,36 @@
             gap: 8px;
             font-size: 13px;
             transition: 0.2s;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
         }
 
-        .action-item:hover.blue { color: #1d9bf0; }
-        .action-item:hover.green { color: var(--retweet-color); }
-        .action-item:hover.pink { color: var(--like-color); }
+        .action-container {
+            display: flex;
+            align-items: center;
+            group-hover: text-decoration: none;
+        }
+        
+        /* Interaction States */
+        .action-container:hover .action-item.reply { background: rgba(29, 155, 240, 0.1); color: #1d9bf0; }
+        .action-container:hover .count.reply { color: #1d9bf0; }
+
+        .action-container:hover .action-item.retweet { background: rgba(0, 186, 124, 0.1); color: var(--retweet-color); }
+        .action-container:hover .count.retweet { color: var(--retweet-color); }
+
+        .action-container:hover .action-item.like { background: rgba(249, 24, 128, 0.1); color: var(--like-color); }
+        .action-container:hover .count.like { color: var(--like-color); }
+
+        /* Active Interaction States (Clicked) */
+        .liked .action-item.like { color: var(--like-color); }
+        .liked .count.like { color: var(--like-color); }
+        
+        .retweeted .action-item.retweet { color: var(--retweet-color); }
+        .retweeted .count.retweet { color: var(--retweet-color); }
 
         /* Right Sidebar */
         .right-sidebar {
@@ -227,6 +265,18 @@
             border-radius: 30px;
             color: var(--text-secondary);
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            width: 100%;
         }
 
         .trend-box {
@@ -237,8 +287,14 @@
 
         .trend-item {
             margin-bottom: 20px;
+            cursor: pointer;
+            transition: 0.2s;
         }
         
+        .trend-item:hover {
+            background-color: rgba(255,255,255,0.03);
+        }
+
         .trend-cat { font-size: 13px; color: var(--text-secondary); }
         .trend-name { font-weight: bold; margin: 2px 0; }
         .trend-count { font-size: 13px; color: var(--text-secondary); }
@@ -251,7 +307,57 @@
             margin-top: 10px;
             cursor: pointer;
         }
+        .quote-tweet:hover { background-color: rgba(255,255,255,0.03); }
         .quote-user { display: flex; gap: 5px; align-items: center; font-size: 14px; margin-bottom: 5px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: black;
+            width: 600px;
+            border-radius: 16px;
+            padding: 15px;
+            max-width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-family: inherit;
+            outline: none;
+            resize: none;
+            min-height: 150px;
+        }
 
         @media (max-width: 1000px) {
             .right-sidebar { display: none; }
@@ -264,22 +370,21 @@
     <!-- Left Navigation -->
     <div class="sidebar">
         <div class="nav-item" style="font-size: 30px;"><i class="fas fa-bolt" style="color: var(--accent-color);"></i></div>
-        <div class="nav-item"><i class="fas fa-home"></i> Home</div>
-        <div class="nav-item"><i class="fas fa-search"></i> Explore</div>
-        <div class="nav-item"><i class="fas fa-bell"></i> Notifications <span style="background: var(--accent-color); color:black; font-size:12px; padding:2px 6px; border-radius:50%;">20+</span></div>
-        <div class="nav-item"><i class="fas fa-envelope"></i> Messages</div>
-        <div class="nav-item"><i class="far fa-user"></i> Profile</div>
-        <button class="post-btn">Post</button>
+        <div class="nav-item active" onclick="setActive(this); scrollToTop();"><i class="fas fa-home"></i> Home</div>
+        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-search"></i> Explore</div>
+        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-bell"></i> Notifications <span style="background: var(--accent-color); color:black; font-size:12px; padding:2px 6px; border-radius:50%;">20+</span></div>
+        <div class="nav-item" onclick="setActive(this)"><i class="fas fa-envelope"></i> Messages</div>
+        <div class="nav-item" onclick="setActive(this)"><i class="far fa-user"></i> Profile</div>
+        <button class="post-btn" onclick="openModal()">Post</button>
     </div>
 
     <!-- Main Feed -->
     <div class="feed">
-        <div class="feed-header">
+        <div class="feed-header" onclick="scrollToTop()">
             <h3>Home</h3>
         </div>
 
-        <!-- TWEET 1: The Core Contradiction (Pinned) -->
-        <!-- User point 1: "This Fourth of July is yours, not mine." -->
+        <!-- TWEET 1 -->
         <div class="tweet">
             <div style="position: absolute; top: 12px; left: 45px; font-size: 10px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px;">
                 <i class="fas fa-thumbtack"></i> Pinned
@@ -299,7 +404,6 @@ Your high independence only reveals the immeasurable distance between us. To ask
 
 #July4th #Hypocrisy #NotMyHoliday</div>
                 
-                <!-- Quote Tweet Simulation -->
                 <div class="quote-tweet">
                     <div class="quote-user">
                         <img src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" style="width:20px; height:20px; border-radius:50%;">
@@ -309,16 +413,27 @@ Your high independence only reveals the immeasurable distance between us. To ask
                 </div>
 
                 <div class="actions">
-                    <div class="action-item"><i class="far fa-comment"></i> 1.5K</div>
-                    <div class="action-item green"><i class="fas fa-retweet"></i> 12K</div>
-                    <div class="action-item pink"><i class="far fa-heart"></i> 45K</div>
-                    <div class="action-item"><i class="far fa-chart-bar"></i> 2.1M</div>
+                    <div class="action-container" onclick="toggleAction(this, 'reply')">
+                        <button class="action-item reply"><i class="far fa-comment"></i></button>
+                        <span class="count reply">1.5K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
+                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
+                        <span class="count retweet">12K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'like')">
+                        <button class="action-item like"><i class="far fa-heart"></i></button>
+                        <span class="count like">45K</span>
+                    </div>
+                    <div class="action-container">
+                        <button class="action-item"><i class="far fa-chart-bar"></i></button>
+                        <span class="count">2.1M</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TWEET 2: Rhetorical Climax -->
-        <!-- User point 2: "Scorching irony, not argument." -->
+        <!-- TWEET 2 -->
         <div class="tweet">
             <img src="image.jpg" class="avatar">
             <div class="tweet-content">
@@ -337,16 +452,27 @@ Not convincing argument, but <span class="highlight">SCORCHING IRONY</span>.
 
 I am not here to persuade you. I am here to denounce you.</div>
                 <div class="actions">
-                    <div class="action-item"><i class="far fa-comment"></i> 420</div>
-                    <div class="action-item green"><i class="fas fa-retweet"></i> 5.6K</div>
-                    <div class="action-item pink"><i class="far fa-heart"></i> 18K</div>
-                    <div class="action-item"><i class="far fa-chart-bar"></i> 890K</div>
+                    <div class="action-container" onclick="toggleAction(this, 'reply')">
+                        <button class="action-item reply"><i class="far fa-comment"></i></button>
+                        <span class="count reply">420</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
+                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
+                        <span class="count retweet">5.6K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'like')">
+                        <button class="action-item like"><i class="far fa-heart"></i></button>
+                        <span class="count like">18K</span>
+                    </div>
+                    <div class="action-container">
+                        <button class="action-item"><i class="far fa-chart-bar"></i></button>
+                        <span class="count">890K</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TWEET 3: Evidence & Bribery (Data Viz) -->
-        <!-- User point 3: "Judges take $10 to convict, $5 to free." -->
+        <!-- TWEET 3 -->
         <div class="tweet">
             <img src="image.jpg" class="avatar">
             <div class="tweet-content">
@@ -389,15 +515,23 @@ They have literally put a price tag on corruption. <span class="highlight">Open 
                 </div>
 
                 <div class="actions">
-                    <div class="action-item"><i class="far fa-comment"></i> 892</div>
-                    <div class="action-item green"><i class="fas fa-retweet"></i> 9.1K</div>
-                    <div class="action-item pink"><i class="far fa-heart"></i> 22K</div>
+                    <div class="action-container" onclick="toggleAction(this, 'reply')">
+                        <button class="action-item reply"><i class="far fa-comment"></i></button>
+                        <span class="count reply">892</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
+                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
+                        <span class="count retweet">9.1K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'like')">
+                        <button class="action-item like"><i class="far fa-heart"></i></button>
+                        <span class="count like">22K</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TWEET 4: Hypocrisy of the Church -->
-        <!-- User point 3: "Church is a bulwark of slavery" & "Swine" -->
+        <!-- TWEET 4 -->
         <div class="tweet">
             <img src="image.jpg" class="avatar">
             <div class="tweet-content">
@@ -411,19 +545,27 @@ They have literally put a price tag on corruption. <span class="highlight">Open 
 Your Christianity is a <span class="highlight">LIE</span>. 
 You are the "bulwark" of slavery. ⛪🧱
 
-How can you sing praises to God while men and women are reared for the market like <span class="highlight">SWINE</span> 🐖 for the market? Your prayers are empty. Your hymns are a sham. 
+How can you sing praises to God while men and women are reared for the market like <span class="highlight">SWINE</span> 🐖? Your prayers are empty. Your hymns are a sham. 
 
 I welcome the infidelity that strikes down your slave-holding religion.</div>
                 <div class="actions">
-                    <div class="action-item"><i class="far fa-comment"></i> 3.2K</div>
-                    <div class="action-item green"><i class="fas fa-retweet"></i> 15K</div>
-                    <div class="action-item pink"><i class="far fa-heart"></i> 60K</div>
+                    <div class="action-container" onclick="toggleAction(this, 'reply')">
+                        <button class="action-item reply"><i class="far fa-comment"></i></button>
+                        <span class="count reply">3.2K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
+                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
+                        <span class="count retweet">15K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'like')">
+                        <button class="action-item like"><i class="far fa-heart"></i></button>
+                        <span class="count like">60K</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TWEET 5: Hope & Constitution -->
-        <!-- User point 4: "Glorious Liberty Document" & "I do not despair" -->
+        <!-- TWEET 5 -->
         <div class="tweet">
             <img src="image.jpg" class="avatar">
             <div class="tweet-content">
@@ -440,19 +582,29 @@ The doom of slavery is certain. The tendencies of the age—wind, steam, lightni
 
 I will work with my head, heart, and hand until every chain is broken. ✊🏾</div>
                 <div class="actions">
-                    <div class="action-item"><i class="far fa-comment"></i> 550</div>
-                    <div class="action-item green"><i class="fas fa-retweet"></i> 4.2K</div>
-                    <div class="action-item pink"><i class="far fa-heart"></i> 25K</div>
+                    <div class="action-container" onclick="toggleAction(this, 'reply')">
+                        <button class="action-item reply"><i class="far fa-comment"></i></button>
+                        <span class="count reply">550</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'retweet')">
+                        <button class="action-item retweet"><i class="fas fa-retweet"></i></button>
+                        <span class="count retweet">4.2K</span>
+                    </div>
+                    <div class="action-container" onclick="toggleAction(this, 'like')">
+                        <button class="action-item like"><i class="far fa-heart"></i></button>
+                        <span class="count like">25K</span>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Right Sidebar (Trends) -->
+    <!-- Right Sidebar -->
     <div class="right-sidebar">
         <div class="search">
-            <i class="fas fa-search"></i> Search
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search">
         </div>
 
         <div class="trend-box">
@@ -485,8 +637,89 @@ I will work with my head, heart, and hand until every chain is broken. ✊🏾</
     </div>
 </div>
 
+<!-- Modal for New Post -->
+<div class="modal-overlay" id="postModal" onclick="if(event.target === this) closeModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <button class="post-btn" style="width: auto; padding: 8px 20px; margin: 0; font-size: 15px;" onclick="closeModal()">Post</button>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <img src="image.jpg" class="avatar">
+            <textarea class="modal-input" placeholder="What is happening?!"></textarea>
+        </div>
+        <div style="margin-top: 20px; color: var(--accent-color); font-size: 20px;">
+            <i class="far fa-image" style="margin-right: 15px; cursor: pointer;"></i>
+            <i class="fas fa-poll" style="margin-right: 15px; cursor: pointer;"></i>
+            <i class="far fa-smile" style="cursor: pointer;"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Navigation handling
+    function setActive(element) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Modal handling
+    function openModal() {
+        document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('postModal').style.display = 'none';
+    }
+
+    // Interaction handling (Like, Retweet, Reply)
+    function toggleAction(element, type) {
+        // Prevent bubbling to the tweet click event
+        event.stopPropagation();
+        
+        let isActive = false;
+        
+        if (type === 'like') {
+            isActive = element.classList.toggle('liked');
+            const icon = element.querySelector('i');
+            if (isActive) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        } else if (type === 'retweet') {
+            isActive = element.classList.toggle('retweeted');
+        } else {
+            // Just animation for reply
+            element.style.transform = "scale(0.9)";
+            setTimeout(() => element.style.transform = "scale(1)", 100);
+            return; 
+        }
+
+        // Update number
+        const countSpan = element.querySelector('.count');
+        let countText = countSpan.innerText;
+        let count = parseFloat(countText);
+        let suffix = countText.replace(/[\d\.]/g, '');
+        
+        // Simple logic for K/M handling (approximate for demo)
+        if (isActive) {
+            // Fake increment
+             // Just for visual feedback, we won't do complex math on '2.1M'
+             // but if it's '45K', we can pretend to bump it.
+             element.style.transform = "scale(1.2)";
+             setTimeout(() => element.style.transform = "scale(1)", 200);
+        }
+    }
+</script>
+
 </body>
 </html>
-
 
 
